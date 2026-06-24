@@ -516,33 +516,54 @@ body {
   color: #555;
 }
 
-/* ---- Synthetic comparison: single interactive slider figure ---- */
-.synthetic-compare .synthetic-controls {
+/* ---- Synthetic comparison: controls on the side, compact slider ---- */
+.synthetic-compare {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
-  gap: 0.35rem 1.25rem;
-  margin-bottom: 0.85rem;
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+.synthetic-compare .synthetic-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1rem;
+  flex: 0 0 auto;
+  width: 250px;
+  margin-bottom: 0;
 }
 
 .synthetic-compare .control-group {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  width: 100%;
 }
 
 .synthetic-compare .control-label {
   font-family: 'Google Sans', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #444;
 }
 
 .synthetic-compare .method-picker,
 .synthetic-compare .scene-picker {
   margin-bottom: 0 !important;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.3rem;
+}
+
+/* Override has-addons joining so wrapped buttons read as separate chips. */
+.synthetic-compare .buttons.has-addons .button {
+  margin: 0 !important;
+  border-radius: 9999px !important;
 }
 
 /* Active state for the method/scene pickers (matches baseline-picker accent). */
@@ -559,14 +580,26 @@ body {
   text-decoration: line-through;
 }
 
-/* Center the single large slider and cap its width. */
+/* Compact slider sized like the other figures, sitting beside the controls. */
 .synthetic-slider-wrap {
-  max-width: 960px;
-  margin: 0 auto;
+  flex: 0 1 600px;
+  max-width: 600px;
+  margin: 0;
 }
 
 .synthetic-slider-cell {
   width: 100%;
+}
+
+/* Stack controls above the slider on narrow screens. */
+@media (max-width: 768px) {
+  .synthetic-compare .synthetic-controls {
+    width: 100%;
+  }
+  .synthetic-slider-wrap {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
 }
 
 /* ---- Showcase: per-row inline lighting probe overlay on the slider ---- */
