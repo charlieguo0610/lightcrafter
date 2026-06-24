@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Editor / OS clutter
+*.swp
+.idea/
+.vscode/
+
+# Raw gdrive download cache (we only ship the normalized comparison clips)
+static/videos/comparison/gdrive_download/
+
+# Raw export pairs not referenced by the page (kept locally only)
+demo_pairs_new/
+
+# Source duplicates inside in-the-wild scene folders
+# Only the normalized {input,pbr,illum1,illum2,illum3}.mp4 are shipped.
+static/videos/gallery/in-the-wild-scene-paper/*/building-2__*.mp4
+static/videos/gallery/in-the-wild-scene-paper/*/pbr_*.mp4
+static/videos/gallery/in-the-wild-scene-paper/*/scene_*.mp4
+static/videos/gallery/in-the-wild-scene-paper/*/seq_*.mp4
+static/videos/gallery/in-the-wild-scene-paper/*/temple_*.mp4
+static/videos/gallery/in-the-wild-scene-paper/*/vdm_*.mp4
+
+# HDRs (heavy and not needed by the page itself)
+static/videos/gallery/in-the-wild-scene-paper/*.hdr
+
+# Per-setting normalization metadata
+static/videos/comparison/s*/_seq.txt

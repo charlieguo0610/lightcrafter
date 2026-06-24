@@ -1,0 +1,630 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+
+.publication-title {
+}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+}
+
+.publication-authors a {
+   color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
+
+
+/* Comparison & Gallery cards */
+.comparison-card,
+.gallery-card {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.25rem 0.75rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.comparison-card:last-child,
+.gallery-card:last-child {
+  border-bottom: none;
+}
+
+.comparison-card h3.title,
+.gallery-card h3.title {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.comparison-card h4.title,
+.gallery-card h4.title {
+  text-align: center;
+  margin-bottom: 0.4rem;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.comparison-card h5.title,
+.gallery-card h5.title {
+  margin-bottom: 0.35rem;
+}
+
+.comparison-video,
+.gallery-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  background: #000;
+  object-fit: contain;
+}
+
+/* Gallery PBR rows: chrome envmap ball as image overlay (same corner layout as Dancing). */
+#gallery-lalaland .gallery-envmap-overlay-wrap,
+#gallery-human .gallery-envmap-overlay-wrap,
+#gallery-car-light .gallery-envmap-overlay-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  line-height: 0;
+}
+
+#gallery-lalaland .gallery-envmap-overlay-wrap > video.gallery-video,
+#gallery-human .gallery-envmap-overlay-wrap > video.gallery-video,
+#gallery-car-light .gallery-envmap-overlay-wrap > video.gallery-video {
+  border-radius: 0;
+}
+
+#gallery-lalaland .gallery-envmap-overlay,
+#gallery-human .gallery-envmap-overlay,
+#gallery-car-light .gallery-envmap-overlay {
+  position: absolute;
+  pointer-events: none;
+  top: var(--gallery-envmap-top, 0.5%);
+  left: var(--gallery-envmap-left, 0.5%);
+  width: var(--gallery-envmap-size, 10%);
+  max-width: 72px;
+  height: auto;
+  z-index: 2;
+  border-radius: 50%;
+}
+
+/* Back-compat: older variable name on La La Land card */
+#gallery-lalaland {
+  --gallery-envmap-top: var(--lalaland-envmap-top, 0.5%);
+  --gallery-envmap-left: var(--lalaland-envmap-left, 0.5%);
+  --gallery-envmap-size: var(--lalaland-envmap-size, 10%);
+}
+
+/* CSS grid for fixed-column layouts (var(--cols) per card). */
+.comparison-card > .columns,
+.gallery-card.is-grid > .columns {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 7), minmax(0, 1fr));
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.comparison-card > .columns > .column,
+.gallery-card.is-grid > .columns > .column {
+  padding: 0.1rem;
+  margin: 0;
+  width: auto;
+  flex: none;
+}
+
+@media (max-width: 768px) {
+  .comparison-card > .columns,
+  .gallery-card.is-grid > .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tighten section vertical padding for the page-wide major sections. */
+#comparison,
+#gallery {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Wider container so videos extend closer to the page edges. */
+#comparison .comparison-container,
+#gallery .gallery-container {
+  max-width: 1400px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Comparison header card baseline picker styling. */
+.comparison-header-card .header-card-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-header-card .header-card-label {
+  margin-bottom: 0;
+}
+
+.scene-picker,
+.baseline-picker {
+  margin-bottom: 0.75rem !important;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.scene-picker .button.is-active,
+.baseline-picker .button.is-active {
+  background-color: hsl(204, 86%, 53%);
+  color: white;
+  border-color: hsl(204, 86%, 47%);
+}
+
+.row-takeaway {
+  text-align: center;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0 !important;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.row-method-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0.4rem !important;
+  color: #333;
+}
+
+.baseline-cell-label {
+  font-style: italic;
+  color: hsl(204, 86%, 40%);
+}
+
+/* Placeholder cell for the PCRP video that we don't have yet. */
+.pcrp-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  aspect-ratio: 720 / 480;
+  width: 100%;
+  background: #1c1c1f;
+  color: #ddd;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px dashed #444;
+}
+
+/* Visual divider between Real-world Edits and Showcase. */
+.section-divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 2rem auto 1.5rem auto;
+  width: 60%;
+}
+
+/* Before/After slider used in the Showcase rows: PBR (left) <--> Relit (right) */
+.slider-cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 720 / 480;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: ew-resize;
+}
+
+.slider-cell video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* The "after" (relit) video sits on top of the "before" (PBR) video and is
+   clipped on the right side via clip-path. We update --pos via JS. */
+.slider-cell .slider-after {
+  clip-path: inset(0 0 0 var(--pos, 50%));
+}
+
+.slider-cell .slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos, 50%);
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  transform: translateX(-1px);
+}
+
+.slider-cell .slider-knob {
+  position: absolute;
+  top: 50%;
+  left: var(--pos, 50%);
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid hsl(204, 86%, 47%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: hsl(204, 86%, 40%);
+  pointer-events: none;
+}
+
+.slider-cell .slider-knob::before {
+  content: '\25C0\25B6';   /* ◀▶ */
+  letter-spacing: -2px;
+}
+
+.slider-cell .slider-label {
+  position: absolute;
+  top: 6px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border-radius: 3px;
+  pointer-events: none;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.slider-cell .slider-label.left { left: 6px; }
+.slider-cell .slider-label.right { right: 6px; }
+
+.slider-cell-caption {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+/* Environment-map legend row sitting above the showcase scenes. */
+.envmap-legend {
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0.25rem !important;
+  border-bottom: none !important;
+}
+
+.envmap-legend h5.title {
+  margin-bottom: 0.25rem !important;
+}
+
+.envmap-empty {
+  visibility: hidden;
+}
+
+.envmap-ball {
+  display: block;
+  margin: 0 auto;
+  width: 60%;
+  max-width: 120px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #000;
+  /* Nudge overlay slightly toward top-left inside its cell */
+  transform: translate(-12px, -10px);
+}
+
+/* Legend row above showcase: no heavy bottom border (card already has grid) */
+.gallery-card.showcase-envmap-legend {
+  padding-bottom: 0.35rem;
+}
+
+.showcase-envmap-legend-spacer .title {
+  margin-bottom: 0.35rem;
+}
+
+/* Keep Illum labels clear of chrome balls (global .envmap-ball nudges up with translateY). */
+.showcase-envmap-legend.envmap-legend h5.title {
+  margin-bottom: 0.75rem !important;
+}
+
+.showcase-envmap-legend .envmap-ball {
+  transform: translate(-10px, 0);
+  margin-top: 0.15rem;
+}
+
+#pipeline figure.image img,
+.teaser-image img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 6px;
+}
+
+/* Tighten the section that holds the pipeline diagram so the figure is
+   not surrounded by huge whitespace. */
+#pipeline {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+#pipeline .container {
+  max-width: 1200px;
+}
+#pipeline figure.image {
+  margin: 0 auto;
+}
+
+/* De-anonymized author list: space the inline author blocks + affiliation line. */
+.publication-authors .author-block {
+  margin: 0 0.45rem;
+}
+.publication-authors + .publication-authors {
+  margin-top: 0.45rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* ---- Synthetic comparison: single interactive slider figure ---- */
+.synthetic-compare .synthetic-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.synthetic-compare .control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.synthetic-compare .control-label {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #444;
+}
+
+.synthetic-compare .method-picker,
+.synthetic-compare .scene-picker {
+  margin-bottom: 0 !important;
+}
+
+/* Active state for the method/scene pickers (matches baseline-picker accent). */
+.method-picker .button.is-active {
+  background-color: hsl(204, 86%, 53%);
+  color: white;
+  border-color: hsl(204, 86%, 47%);
+}
+
+.method-picker .button.is-disabled,
+.method-picker .button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Center the single large slider and cap its width. */
+.synthetic-slider-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.synthetic-slider-cell {
+  width: 100%;
+}
+
+/* ---- Showcase: per-row inline lighting probe overlay on the slider ---- */
+.showcase-scene .illum-picker {
+  justify-content: center;
+  margin-bottom: 0.6rem !important;
+}
+
+.showcase-scene .illum-picker .button.is-active {
+  background-color: hsl(204, 86%, 53%);
+  color: white;
+  border-color: hsl(204, 86%, 47%);
+}
+
+.showcase-probe {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 13%;
+  max-width: 48px;
+}
+
+.showcase-probe img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.showcase-probe .showcase-probe-name {
+  display: none;
+}
+
+/* Keep the "PBR" label clear of the top-left lighting probe. */
+.showcase-scene .slider-cell .slider-label.left {
+  top: auto;
+  bottom: 6px;
+}
+
+/* Sub-header chip used for "Synthetic Scenes" / "Real-world Scenes" groupings. */
+.scene-group-label {
+  display: inline-block;
+  margin: 0 auto 1.5rem auto;
+  padding: 0.35rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #555;
+  background: #fafafa;
+}
