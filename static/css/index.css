@@ -507,7 +507,7 @@ body {
 .teaser-headrow,
 .teaser-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.4rem;
   align-items: stretch;
 }
@@ -560,10 +560,10 @@ body {
   font-size: 0.72rem;
 }
 
-/* The PBR<->Relit slider spans the PBR + Relighting columns and fills the row height. */
+/* The PBR<->Relit slider is one 3:2 column, matching the Input/G-buffer cells (no crop). */
 .teaser-slider {
-  grid-column: span 2;
   position: relative;
+  aspect-ratio: 3 / 2;
 }
 .teaser-slider .teaser-slider-cell {
   position: absolute;
@@ -576,10 +576,7 @@ body {
 @media (max-width: 768px) {
   .teaser-headrow,
   .teaser-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .teaser-slider {
-    grid-column: span 2;
+    grid-template-columns: 1fr;
   }
 }
 
