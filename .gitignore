@@ -12,6 +12,9 @@ static/videos/comparison/gdrive_download/
 # Raw export pairs not referenced by the page (kept locally only)
 demo_pairs_new/
 
+# Teaser video generator build artifacts
+teaser/_video_build/
+
 # Source duplicates inside in-the-wild scene folders
 # Only the normalized {input,pbr,illum1,illum2,illum3}.mp4 are shipped.
 static/videos/gallery/in-the-wild-scene-paper/*/building-2__*.mp4

@@ -92,11 +92,104 @@
 
 
 <section class="hero teaser">
-  <div class="container is-max-desktop">
+  <div class="container teaser-video-wrap">
     <div class="hero-body">
-      <figure class="image teaser-image">
-        <img src="./static/images/teaser.png" alt="Teaser figure of our method.">
-      </figure>
+      <!-- Video teaser: each row = Input | Inverse Rendering (G-buffer placeholder) | PBR <-> Relit slider.
+           To add the G-buffer clip later, replace the .teaser-gbuffer div's contents with:
+           <video autoplay muted loop playsinline class="teaser-video"><source src="...gbuffer.mp4" type="video/mp4"></video> -->
+      <div class="teaser-grid">
+        <div class="teaser-headrow">
+          <div class="teaser-head">Input</div>
+          <div class="teaser-head">Inverse Rendering</div>
+          <div class="teaser-head">Physically-Based Render</div>
+          <div class="teaser-head">Relighting</div>
+        </div>
+
+        <!-- Row 1: Dancing -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/lalaland/input.mp4?v=7" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/lalaland/pbr.mp4?v=14" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/lalaland/relit.mp4?v=7" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Car -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/car-light-insertion/input.mp4?v=9" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/car-light-insertion/pbr.mp4?v=9" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/car-light-insertion/relit.mp4?v=9" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/satara_night_no_lamps_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Human -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/human/input.mp4?v=18" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/human/pbr.mp4?v=18" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/human/relit.mp4?v=18" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h2 class="subtitle has-text-centered" style="margin-top: 1.5rem;">
         Given an input video, <strong>LightCrafter</strong> utilizes inverse-rendered
         photometric and geometric scene properties and refines a physically-based rendering

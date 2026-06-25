@@ -492,6 +492,97 @@ body {
   margin-top: 0.15rem;
 }
 
+/* ---- Video teaser grid (hero): Input | G-buffer | PBR <-> Relit slider ---- */
+.teaser-video-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.teaser-grid {
+  width: 100%;
+}
+
+.teaser-headrow,
+.teaser-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  align-items: stretch;
+}
+
+.teaser-headrow {
+  margin-bottom: 0.35rem;
+}
+
+.teaser-head {
+  text-align: center;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.teaser-row {
+  margin-bottom: 0.4rem;
+}
+
+.teaser-cell {
+  position: relative;
+}
+
+.teaser-cell > video.teaser-video,
+.teaser-gbuffer {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
+  background: #000;
+}
+
+/* Inverse-rendering / G-buffer placeholder until the clips are provided. */
+.teaser-gbuffer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #1c1c1f;
+  color: #9aa0b0;
+  border: 1px dashed #555;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.teaser-gbuffer small {
+  color: #6b7280;
+  font-size: 0.72rem;
+}
+
+/* The PBR<->Relit slider spans the PBR + Relighting columns and fills the row height. */
+.teaser-slider {
+  grid-column: span 2;
+  position: relative;
+}
+.teaser-slider .teaser-slider-cell {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+}
+
+@media (max-width: 768px) {
+  .teaser-headrow,
+  .teaser-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .teaser-slider {
+    grid-column: span 2;
+  }
+}
+
 #pipeline figure.image img,
 .teaser-image img {
   display: block;
@@ -649,7 +740,8 @@ body {
 }
 
 /* Keep the "PBR" label clear of the top-left lighting probe. */
-.showcase-scene .slider-cell .slider-label.left {
+.showcase-scene .slider-cell .slider-label.left,
+.teaser-slider .slider-cell .slider-label.left {
   top: auto;
   bottom: 6px;
 }
