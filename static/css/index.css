@@ -264,16 +264,23 @@ body {
 }
 
 /* Tighten section vertical padding for the page-wide major sections. */
+#applications,
 #comparison,
 #gallery {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
 
-/* Wider container so videos extend closer to the page edges. */
-#comparison .comparison-container,
-#gallery .gallery-container {
+#comparison .comparison-container {
   max-width: 1400px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Keep the application + additional-result videos from spanning the whole page. */
+#applications .gallery-container,
+#gallery .gallery-container {
+  max-width: 1080px;
   padding-left: 1rem;
   padding-right: 1rem;
 }

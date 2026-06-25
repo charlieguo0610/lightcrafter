@@ -40,13 +40,13 @@
             PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting
           </h1>
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><strong>Zixin Guo</strong><sup>1</sup></span>
-            <span class="author-block"><strong>Yehonathan Litman</strong><sup>1</sup></span>
-            <span class="author-block"><strong>Yifeng He</strong><sup>2</sup></span>
+            <span class="author-block"><a href="https://zixinguo.me/" target="_blank" rel="noopener"><strong>Zixin Guo</strong></a><sup>1</sup></span>
+            <span class="author-block"><a href="https://yehonathanlitman.github.io/" target="_blank" rel="noopener"><strong>Yehonathan Litman</strong></a><sup>1</sup></span>
+            <span class="author-block"><a href="https://www.linkedin.com/in/yifeng-he-502a85158/" target="_blank" rel="noopener"><strong>Yifeng He</strong></a><sup>2</sup></span>
             <br>
-            <span class="author-block"><strong>John Miller</strong><sup>3</sup></span>
-            <span class="author-block"><strong>Chuhan Chen</strong><sup>1</sup></span>
-            <span class="author-block"><strong>Deva Ramanan</strong><sup>1</sup></span>
+            <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=3pO52nwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener"><strong>John Miller</strong></a><sup>3</sup></span>
+            <span class="author-block"><a href="https://sally-chen.github.io/" target="_blank" rel="noopener"><strong>Chuhan Chen</strong></a><sup>1</sup></span>
+            <span class="author-block"><a href="https://www.cs.cmu.edu/~deva/" target="_blank" rel="noopener"><strong>Deva Ramanan</strong></a><sup>1</sup></span>
           </div>
           <div class="is-size-5 publication-authors">
             <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
@@ -183,140 +183,8 @@
 </section>
 
 
-<!-- Comparison with Other Methods (interactive baseline picker) -->
-<section class="section" id="comparison">
-  <div class="container is-fluid comparison-container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Comparison with Other Methods</h2>
-        <div class="content has-text-justified">
-          <p>
-            We compare against <strong>PCRP-Video</strong>, <strong>UniRelight</strong>,
-            <strong>LightX</strong>, and <strong>Diffusion-Renderer (DR)</strong> on long video
-            relighting tasks. The first row is a real-world scene where you can A/B our result
-            against any baseline. For the synthetic benchmark below, pick a scene and choose
-            which method appears on each side of the slider, then drag the handle to compare
-            any two of Input / Target / PBR / Ours / DR / LightX / UniRelight on the same clip.
-          </p>
-          <p>
-            Baselines often produce plausible relighting but entangle illumination with
-            generation, causing baked-in source lighting, color-tone drift, or inconsistent
-            shadows; our explicit PBR proxy anchors the target-light interaction before
-            diffusion refinement, enabling more faithful and temporally consistent responses
-            to the target illumination.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Real-world interactive row: Source | PBR | Ours | <picked baseline> -->
-    <div class="has-text-centered" style="margin: 0.5rem 0 0.75rem;">
-      <span class="scene-group-label">Real-world Scene</span>
-    </div>
-    <div class="comparison-card comparison-header-card" id="realworld-row" style="--cols: 4;">
-      <div class="header-card-bar">
-        <div class="buttons has-addons is-centered baseline-picker">
-          <button class="button is-small is-rounded is-active" data-baseline="lightx">LightX</button>
-          <button class="button is-small is-rounded" data-baseline="dr">DR</button>
-          <button class="button is-small is-rounded" data-baseline="unirelight">UniRelight</button>
-          <button class="button is-small is-rounded" data-baseline="pcrp">PCRP-Video</button>
-        </div>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Source</h5>
-          <video autoplay muted loop playsinline class="comparison-video" data-method="input">
-            <source src="./static/videos/comparison/realworld-row/input.mp4?v=5" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">PBR</h5>
-          <video autoplay muted loop playsinline class="comparison-video" data-method="pbr">
-            <source src="./static/videos/comparison/realworld-row/pbr.mp4?v=5" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>Ours</strong></h5>
-          <video autoplay muted loop playsinline class="comparison-video" data-method="ours">
-            <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6 baseline-cell-label">vs LightX</h5>
-          <video autoplay muted loop playsinline class="comparison-video" data-method="baseline-pick" data-current="lightx">
-            <source src="./static/videos/comparison/realworld-row/lightx.mp4?v=5" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-
-    <!-- Synthetic scenes label -->
-    <div class="has-text-centered" style="margin: 1.5rem 0 0.75rem;">
-      <span class="scene-group-label">Synthetic Scenes</span>
-    </div>
-
-    <!-- Single interactive figure: pick a synthetic scene, then choose which
-         method appears on each side of the before/after slider. -->
-    <div class="comparison-card synthetic-compare" id="synthetic-compare"
-         data-scene="s1" data-left="ours" data-right="dr">
-      <div class="synthetic-controls">
-        <div class="control-group">
-          <span class="control-label">Scene</span>
-          <div class="buttons has-addons is-centered scene-picker syn-scene-picker">
-            <button class="button is-small is-rounded is-active" data-scene="s1">Scene 1</button>
-            <button class="button is-small is-rounded" data-scene="s2">Scene 2</button>
-            <button class="button is-small is-rounded" data-scene="s3">Scene 3</button>
-            <button class="button is-small is-rounded" data-scene="s4">Scene 4</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Left</span>
-          <div class="buttons has-addons is-centered method-picker syn-left-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="target">Target</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded" data-method="dr">DR</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Right</span>
-          <div class="buttons has-addons is-centered method-picker syn-right-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="target">Target</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded is-active" data-method="dr">DR</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="synthetic-slider-wrap">
-        <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
-          <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/s1/ours.mp4" type="video/mp4">
-          </video>
-          <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/s1/dr.mp4" type="video/mp4">
-          </video>
-          <span class="slider-label left syn-left-label">Ours</span>
-          <span class="slider-label right syn-right-label">DR</span>
-          <div class="slider-handle"></div>
-          <div class="slider-knob"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- Video Gallery (Our Results) -->
-<section class="section" id="gallery">
+<!-- Real-world Video Relighting Applications -->
+<section class="section" id="applications">
   <div class="container is-fluid gallery-container">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full-width">
@@ -334,7 +202,6 @@
 
     <!-- 1. La La Land (3-col: input | pbr | relit) -->
     <div class="gallery-card is-grid" id="gallery-lalaland" style="--cols: 3;">
-      <h3 class="title is-4">Dynamic Scene: Dancing</h3>
       <div class="columns is-centered is-mobile">
         <div class="column has-text-centered">
           <h5 class="title is-6">Input</h5>
@@ -364,7 +231,6 @@
 
     <!-- 2. Human (3-col: input | pbr | relit) -->
     <div class="gallery-card is-grid" id="gallery-human" style="--cols: 3;">
-      <h3 class="title is-4">Dynamic Scene: Human Face</h3>
       <div class="columns is-centered is-mobile">
         <div class="column has-text-centered">
           <h5 class="title is-6">Input</h5>
@@ -447,12 +313,155 @@
       </div>
     </div>
 
-    <hr class="section-divider">
+  </div>
+</section>
 
-    <!-- Showcase header -->
-    <div class="columns is-centered has-text-centered" style="margin-top: 1.5rem;">
+
+<!-- Long Video Relighting -->
+<section class="section" id="comparison">
+  <div class="container is-fluid comparison-container">
+    <div class="columns is-centered has-text-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Showcase</h2>
+        <h2 class="title is-3">Long Video Relighting</h2>
+        <div class="content has-text-justified">
+          <p>
+            We compare against <strong>PCRP-Video</strong>, <strong>UniRelight</strong>,
+            <strong>LightX</strong>, and <strong>DiffusionRenderer</strong> on long video
+            relighting tasks. Choose which method appears on each side of the slider and
+            drag the handle to A/B the results &mdash; on a real-world scene below, and on
+            our synthetic benchmark (where a held-out Target is also available).
+          </p>
+          <p>
+            Baselines often produce plausible relighting but entangle illumination with
+            generation, causing baked-in source lighting, color-tone drift, or inconsistent
+            shadows; our explicit PBR proxy anchors the target-light interaction before
+            diffusion refinement, enabling more faithful and temporally consistent responses
+            to the target illumination.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-world scene label -->
+    <div class="has-text-centered" style="margin: 0.5rem 0 0.75rem;">
+      <span class="scene-group-label">Real-world Scene</span>
+    </div>
+
+    <!-- Interactive figure: choose the method on each side of the before/after slider. -->
+    <div class="comparison-card synthetic-compare" id="realworld-compare"
+         data-base="./static/videos/comparison/realworld-row" data-left="ours" data-right="lightx">
+      <div class="synthetic-controls">
+        <div class="control-group">
+          <span class="control-label">Left</span>
+          <div class="buttons has-addons is-centered method-picker rw-left-picker">
+            <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
+            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
+            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
+            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
+            <button class="button is-small is-rounded" data-method="pcrp">PCRP-Video</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="control-label">Right</span>
+          <div class="buttons has-addons is-centered method-picker rw-right-picker">
+            <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+            <button class="button is-small is-rounded" data-method="ours">Ours</button>
+            <button class="button is-small is-rounded is-active" data-method="lightx">LightX</button>
+            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
+            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
+            <button class="button is-small is-rounded" data-method="pcrp">PCRP-Video</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="synthetic-slider-wrap">
+        <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
+          <video autoplay muted loop playsinline class="comparison-video slider-before">
+            <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
+          </video>
+          <video autoplay muted loop playsinline class="comparison-video slider-after">
+            <source src="./static/videos/comparison/realworld-row/lightx.mp4?v=5" type="video/mp4">
+          </video>
+          <span class="slider-label left rw-left-label">Ours</span>
+          <span class="slider-label right rw-right-label">LightX</span>
+          <div class="slider-handle"></div>
+          <div class="slider-knob"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Synthetic scenes label -->
+    <div class="has-text-centered" style="margin: 1.5rem 0 0.75rem;">
+      <span class="scene-group-label">Synthetic Scenes</span>
+    </div>
+
+    <!-- Single interactive figure: pick a synthetic scene, then choose which
+         method appears on each side of the before/after slider. -->
+    <div class="comparison-card synthetic-compare" id="synthetic-compare"
+         data-scene="s1" data-left="ours" data-right="dr">
+      <div class="synthetic-controls">
+        <div class="control-group">
+          <span class="control-label">Scene</span>
+          <div class="buttons has-addons is-centered scene-picker syn-scene-picker">
+            <button class="button is-small is-rounded is-active" data-scene="s1">Scene 1</button>
+            <button class="button is-small is-rounded" data-scene="s2">Scene 2</button>
+            <button class="button is-small is-rounded" data-scene="s3">Scene 3</button>
+            <button class="button is-small is-rounded" data-scene="s4">Scene 4</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="control-label">Left</span>
+          <div class="buttons has-addons is-centered method-picker syn-left-picker">
+            <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="target">Target</button>
+            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
+            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
+            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="control-label">Right</span>
+          <div class="buttons has-addons is-centered method-picker syn-right-picker">
+            <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="target">Target</button>
+            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+            <button class="button is-small is-rounded" data-method="ours">Ours</button>
+            <button class="button is-small is-rounded is-active" data-method="dr">DiffusionRenderer</button>
+            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="synthetic-slider-wrap">
+        <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
+          <video autoplay muted loop playsinline class="comparison-video slider-before">
+            <source src="./static/videos/comparison/s1/ours.mp4" type="video/mp4">
+          </video>
+          <video autoplay muted loop playsinline class="comparison-video slider-after">
+            <source src="./static/videos/comparison/s1/dr.mp4" type="video/mp4">
+          </video>
+          <span class="slider-label left syn-left-label">Ours</span>
+          <span class="slider-label right syn-right-label">DiffusionRenderer</span>
+          <div class="slider-handle"></div>
+          <div class="slider-knob"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Additional Results -->
+<section class="section" id="gallery">
+  <div class="container is-fluid gallery-container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Additional Results</h2>
         <div class="content has-text-justified">
           <p>
             Multi-illumination relighting on a variety of scenes. Each row shows the

@@ -264,18 +264,18 @@ $(document).ready(function() {
 
       var FILE = {
         input: 'input', target: 'gt', pbr: 'pbr', ours: 'ours',
-        dr: 'dr', lightx: 'lightx', unirelight: 'unirelight'
+        dr: 'dr', lightx: 'lightx'
       };
       var LABEL = {
         input: 'Input', target: 'Target', pbr: 'PBR', ours: 'Ours',
-        dr: 'DR', lightx: 'LightX', unirelight: 'UniRelight'
+        dr: 'DiffusionRenderer', lightx: 'LightX'
       };
-      // Methods that actually have a clip in each scene folder (s2 has no UniRelight).
+      // Methods available in every synthetic scene folder.
       var AVAIL = {
-        s1: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx', 'unirelight'],
+        s1: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
         s2: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
-        s3: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx', 'unirelight'],
-        s4: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx', 'unirelight']
+        s3: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
+        s4: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx']
       };
 
       function srcFor(scene, method) {
@@ -353,6 +353,70 @@ $(document).ready(function() {
     }
 
     wireSyntheticComparison();
+
+    // ----- Real-world comparison: single scene, choose method per slider side -----
+    function wireRealworldComparison() {
+      var root = document.getElementById('realworld-compare');
+      if (!root) return;
+      var base = root.getAttribute('data-base');
+      var cell = root.querySelector('.synthetic-slider-cell');
+      var beforeVid = cell.querySelector('video.slider-before');
+      var afterVid = cell.querySelector('video.slider-after');
+      var leftLabel = root.querySelector('.rw-left-label');
+      var rightLabel = root.querySelector('.rw-right-label');
+      var leftPicker = root.querySelector('.rw-left-picker');
+      var rightPicker = root.querySelector('.rw-right-picker');
+
+      var FILE = {
+        input: 'input', pbr: 'pbr', ours: 'ours', dr: 'dr',
+        lightx: 'lightx', unirelight: 'unirelight', pcrp: 'pcrp'
+      };
+      var LABEL = {
+        input: 'Input', pbr: 'PBR', ours: 'Ours', dr: 'DiffusionRenderer',
+        lightx: 'LightX', unirelight: 'UniRelight', pcrp: 'PCRP-Video'
+      };
+
+      function srcFor(method) { return base + '/' + FILE[method] + '.mp4?v=5'; }
+      function setVideo(video, url) {
+        var s = video.querySelector('source');
+        if (!s) return;
+        if (s.getAttribute('src') === url) return;
+        s.setAttribute('src', url);
+        video.load();
+        video.play().catch(function () { /* ignore */ });
+      }
+      function setActive(group, value) {
+        Array.prototype.slice.call(group.querySelectorAll('button')).forEach(function (b) {
+          if (b.getAttribute('data-method') === value) b.classList.add('is-active');
+          else b.classList.remove('is-active');
+        });
+      }
+      function render() {
+        var left = root.getAttribute('data-left');
+        var right = root.getAttribute('data-right');
+        setActive(leftPicker, left);
+        setActive(rightPicker, right);
+        setVideo(beforeVid, srcFor(left));
+        setVideo(afterVid, srcFor(right));
+        if (leftLabel) leftLabel.textContent = LABEL[left];
+        if (rightLabel) rightLabel.textContent = LABEL[right];
+      }
+      leftPicker.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-method]');
+        if (!btn) return;
+        root.setAttribute('data-left', btn.getAttribute('data-method'));
+        render();
+      });
+      rightPicker.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-method]');
+        if (!btn) return;
+        root.setAttribute('data-right', btn.getAttribute('data-method'));
+        render();
+      });
+      render();
+    }
+
+    wireRealworldComparison();
 
     // ----- Showcase scenes: pick illum for the slider + inline lighting probe -----
     function wireShowcaseScene(card) {
