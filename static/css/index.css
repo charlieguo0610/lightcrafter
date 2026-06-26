@@ -517,6 +517,9 @@ body {
 }
 
 .teaser-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-family: 'Google Sans', sans-serif;
   font-weight: 600;
@@ -558,6 +561,127 @@ body {
 .teaser-gbuffer small {
   color: #6b7280;
   font-size: 0.72rem;
+}
+
+/* Inverse-rendering cell: 4 G-buffers shown at once in draggable diagonal bands.
+   --shift (set via JS drag) moves all 3 boundaries together. */
+.teaser-quad {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  cursor: ew-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.teaser-quad video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+/* Four parallelogram bands split by 3 parallel diagonals (~20deg from vertical). */
+.teaser-quad video:nth-of-type(1) { clip-path: polygon(0 0, calc(37% + var(--shift,0%)) 0, calc(13% + var(--shift,0%)) 100%, 0 100%); }
+.teaser-quad video:nth-of-type(2) { clip-path: polygon(calc(37% + var(--shift,0%)) 0, calc(62% + var(--shift,0%)) 0, calc(38% + var(--shift,0%)) 100%, calc(13% + var(--shift,0%)) 100%); }
+.teaser-quad video:nth-of-type(3) { clip-path: polygon(calc(62% + var(--shift,0%)) 0, calc(87% + var(--shift,0%)) 0, calc(63% + var(--shift,0%)) 100%, calc(38% + var(--shift,0%)) 100%); }
+.teaser-quad video:nth-of-type(4) { clip-path: polygon(calc(87% + var(--shift,0%)) 0, 100% 0, 100% 100%, calc(63% + var(--shift,0%)) 100%); }
+
+/* Thin diagonal dividers — same geometry as the bands, so always aligned. */
+.teaser-quad .qdiv {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .9);
+  pointer-events: none;
+}
+.teaser-quad .qdiv1 { clip-path: polygon(calc(37% + var(--shift,0%)) 0, calc(37.5% + var(--shift,0%)) 0, calc(13.5% + var(--shift,0%)) 100%, calc(13% + var(--shift,0%)) 100%); }
+.teaser-quad .qdiv2 { clip-path: polygon(calc(62% + var(--shift,0%)) 0, calc(62.5% + var(--shift,0%)) 0, calc(38.5% + var(--shift,0%)) 100%, calc(38% + var(--shift,0%)) 100%); }
+.teaser-quad .qdiv3 { clip-path: polygon(calc(87% + var(--shift,0%)) 0, calc(87.5% + var(--shift,0%)) 0, calc(63.5% + var(--shift,0%)) 100%, calc(63% + var(--shift,0%)) 100%); }
+
+/* Drag knob sits on the middle divider. */
+.teaser-quad .qknob {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--shift,0%));
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid hsl(204, 86%, 47%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: hsl(204, 86%, 40%);
+  pointer-events: none;
+}
+.teaser-quad .qknob::before { content: '\25C0\25B6'; letter-spacing: -2px; }
+
+/* Inverse-rendering cell: toggle between Appearance (G-buffer quad) and Geometry. */
+.teaser-ir {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+}
+.teaser-ir .teaser-quad {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+.teaser-ir .ir-geometry {
+  position: absolute;
+  inset: 0;
+}
+.teaser-ir .ir-geometry video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.teaser-recon-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #1c1c1f;
+  color: #9aa0b0;
+  border: 1px dashed #555;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.teaser-recon-ph small { color: #6b7280; font-size: 0.72rem; }
+
+/* Toggle visibility driven by data-ir-mode on the grid. */
+.teaser-grid[data-ir-mode="geometry"] .ir-appearance { display: none; }
+.teaser-grid[data-ir-mode="appearance"] .ir-geometry,
+.teaser-grid:not([data-ir-mode]) .ir-geometry { display: none; }
+
+/* Header label + Appearance/Geometry toggle, side by side. */
+.ir-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.ir-toggle {
+  margin: 0 !important;
+}
+.ir-toggle .button.is-active {
+  background-color: hsl(204, 86%, 53%);
+  color: white;
+  border-color: hsl(204, 86%, 47%);
 }
 
 /* The PBR<->Relit slider is one 3:2 column, matching the Input/G-buffer cells (no crop). */

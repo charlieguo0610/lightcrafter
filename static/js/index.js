@@ -83,7 +83,7 @@ $(document).ready(function() {
     // to the running playhead automatically.
     function videosIn(card) {
       return Array.prototype.slice.call(
-        card.querySelectorAll('video.comparison-video, video.gallery-video')
+        card.querySelectorAll('video.comparison-video, video.gallery-video, video.teaser-video')
       );
     }
 
@@ -136,7 +136,7 @@ $(document).ready(function() {
       });
     }
 
-    document.querySelectorAll('.comparison-card, .gallery-card').forEach(function (card) {
+    document.querySelectorAll('.comparison-card, .gallery-card, .teaser-row').forEach(function (card) {
       syncVideoGroup(card);
     });
 
@@ -247,6 +247,44 @@ $(document).ready(function() {
     }
 
     document.querySelectorAll('.slider-cell').forEach(wireSlider);
+
+    // ----- Teaser inverse-rendering quad: drag to shift the 4 diagonal bands -----
+    function wireQuadDrag(quad) {
+      var dragging = false;
+      function setShift(clientX) {
+        var rect = quad.getBoundingClientRect();
+        var pct = ((clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(25, Math.min(75, pct));   // keep knob (middle divider) on-screen
+        quad.style.setProperty('--shift', (pct - 50) + '%');
+      }
+      quad.addEventListener('mousedown', function (e) { dragging = true; setShift(e.clientX); e.preventDefault(); });
+      window.addEventListener('mousemove', function (e) { if (dragging) setShift(e.clientX); });
+      window.addEventListener('mouseup', function () { dragging = false; });
+      quad.addEventListener('touchstart', function (e) { if (e.touches.length) { dragging = true; setShift(e.touches[0].clientX); } }, { passive: true });
+      quad.addEventListener('touchmove', function (e) { if (dragging && e.touches.length) setShift(e.touches[0].clientX); }, { passive: true });
+      quad.addEventListener('touchend', function () { dragging = false; });
+    }
+    document.querySelectorAll('.teaser-quad').forEach(wireQuadDrag);
+
+    // ----- Inverse-rendering Appearance / Reconstruction toggle (controls all rows) -----
+    (function () {
+      var grid = document.querySelector('.teaser-grid');
+      var toggle = document.querySelector('.ir-toggle');
+      if (!grid || !toggle) return;
+      var geoVids = Array.prototype.slice.call(grid.querySelectorAll('.ir-geometry video'));
+      geoVids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
+      function playGeo() { geoVids.forEach(function (v) { v.play().catch(function () {}); }); }
+      toggle.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-ir]');
+        if (!btn) return;
+        grid.setAttribute('data-ir-mode', btn.getAttribute('data-ir'));
+        Array.prototype.slice.call(toggle.querySelectorAll('button')).forEach(function (b) {
+          b.classList.toggle('is-active', b === btn);
+        });
+        if (btn.getAttribute('data-ir') === 'geometry') playGeo();
+      });
+      playGeo();
+    })();
 
     // ----- Synthetic comparison: pick scene + left/right method for the slider -----
     function wireSyntheticComparison() {

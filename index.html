@@ -94,14 +94,19 @@
 <section class="hero teaser">
   <div class="container teaser-video-wrap">
     <div class="hero-body">
-      <!-- Video teaser: each row = Input | Inverse Rendering (G-buffer placeholder) | PBR <-> Relit slider.
-           To add the G-buffer clip later, replace the .teaser-gbuffer div's contents with:
-           <video autoplay muted loop playsinline class="teaser-video"><source src="...gbuffer.mp4" type="video/mp4"></video> -->
-      <div class="teaser-grid">
+      <!-- Video teaser: each row = Input | Inverse Rendering (Normal <-> Albedo slider) | PBR <-> Relit slider.
+           All videos in a row are frame-locked via syncVideoGroup ('.teaser-row'). -->
+      <div class="teaser-grid" data-ir-mode="appearance">
         <div class="teaser-headrow">
           <div class="teaser-head">Input</div>
-          <div class="teaser-head">Inverse Rendering</div>
-          <div class="teaser-head">Physically-Based Render &rarr; Relighting</div>
+          <div class="teaser-head ir-head">
+            <span>Inverse Rendering</span>
+            <div class="buttons has-addons ir-toggle">
+              <button class="button is-small is-rounded is-active" data-ir="appearance">Appearance</button>
+              <button class="button is-small is-rounded" data-ir="geometry">Geometry</button>
+            </div>
+          </div>
+          <div class="teaser-head">Relighting via PBR &rarr; Diffusion Refinement</div>
         </div>
 
         <!-- Row 1: Dancing -->
@@ -111,7 +116,19 @@
               <source src="./static/videos/gallery/lalaland/input.mp4?v=7" type="video/mp4">
             </video>
           </div>
-          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/normal.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/basecolor.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/roughness.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/metallic.mp4?v=1" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/lalaland/geometry.mp4?v=3" type="video/mp4"></video>
+            </div>
+          </div>
           <div class="teaser-slider">
             <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
               <video autoplay muted loop playsinline class="teaser-video slider-before">
@@ -139,7 +156,19 @@
               <source src="./static/videos/gallery/car-light-insertion/input.mp4?v=9" type="video/mp4">
             </video>
           </div>
-          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/normal.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/basecolor.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/roughness.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/metallic.mp4?v=1" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/car-light-insertion/geometry.mp4?v=2" type="video/mp4"></video>
+            </div>
+          </div>
           <div class="teaser-slider">
             <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
               <video autoplay muted loop playsinline class="teaser-video slider-before">
@@ -164,10 +193,22 @@
         <div class="teaser-row">
           <div class="teaser-cell">
             <video autoplay muted loop playsinline class="teaser-video">
-              <source src="./static/videos/gallery/human/input.mp4?v=18" type="video/mp4">
+              <source src="./static/videos/gallery/human/input.mp4?v=20" type="video/mp4">
             </video>
           </div>
-          <div class="teaser-cell teaser-gbuffer"><span>G-buffer<br><small>coming soon</small></span></div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/normal.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/basecolor.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/roughness.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/metallic.mp4?v=2" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/human/geometry.mp4?v=2" type="video/mp4"></video>
+            </div>
+          </div>
           <div class="teaser-slider">
             <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
               <video autoplay muted loop playsinline class="teaser-video slider-before">
@@ -327,7 +368,7 @@
         <div class="column has-text-centered">
           <h5 class="title is-6">Input</h5>
           <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/human/input.mp4?v=18" type="video/mp4">
+            <source src="./static/videos/gallery/human/input.mp4?v=20" type="video/mp4">
           </video>
         </div>
         <div class="column has-text-centered">
@@ -441,14 +482,14 @@
 
     <!-- Interactive figure: choose the method on each side of the before/after slider. -->
     <div class="comparison-card synthetic-compare" id="realworld-compare"
-         data-base="./static/videos/comparison/realworld-row" data-left="ours" data-right="lightx">
+         data-base="./static/videos/comparison/realworld-row" data-left="input" data-right="ours">
       <div class="synthetic-controls">
         <div class="control-group">
           <span class="control-label">Left</span>
           <div class="buttons has-addons is-centered method-picker rw-left-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded is-active" data-method="input">Input</button>
             <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
+            <button class="button is-small is-rounded" data-method="ours">Ours</button>
             <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
             <button class="button is-small is-rounded" data-method="lightx">LightX</button>
             <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
@@ -460,9 +501,9 @@
           <div class="buttons has-addons is-centered method-picker rw-right-picker">
             <button class="button is-small is-rounded" data-method="input">Input</button>
             <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded is-active" data-method="lightx">LightX</button>
+            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
             <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
+            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
             <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
             <button class="button is-small is-rounded" data-method="pcrp">PCRP-Video</button>
           </div>
@@ -472,13 +513,13 @@
       <div class="synthetic-slider-wrap">
         <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
           <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
+            <source src="./static/videos/comparison/realworld-row/input.mp4?v=5" type="video/mp4">
           </video>
           <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/realworld-row/lightx.mp4?v=5" type="video/mp4">
+            <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
           </video>
-          <span class="slider-label left rw-left-label">Ours</span>
-          <span class="slider-label right rw-right-label">LightX</span>
+          <span class="slider-label left rw-left-label">Input</span>
+          <span class="slider-label right rw-right-label">Ours</span>
           <div class="slider-handle"></div>
           <div class="slider-knob"></div>
         </div>
