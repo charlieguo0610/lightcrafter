@@ -500,6 +500,19 @@ body {
   padding-right: 1rem;
 }
 
+/* Single large hero teaser video. */
+.teaser-hero-video {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.teaser-hero-video video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  background: #fff;
+}
+
 .teaser-grid {
   width: 100%;
 }
