@@ -17,6 +17,10 @@ teaser/_video_build/
 teaser/_teaser_build/
 teaser/_hero_build/
 
+# Teaser source-video handoff bundle (large; shared out-of-band)
+teaser/teaser_sources/
+teaser/teaser_sources.zip
+
 # Source duplicates inside in-the-wild scene folders
 # Only the normalized {input,pbr,illum1,illum2,illum3}.mp4 are shipped.
 static/videos/gallery/in-the-wild-scene-paper/*/building-2__*.mp4

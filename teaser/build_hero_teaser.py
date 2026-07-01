@@ -25,7 +25,14 @@ OUT = ROOT / "static/videos/teaser.mp4"
 
 W, H = 1920, 1080
 FPS = 30
-FONT = "/System/Library/Fonts/Supplemental/Arial.ttf"
+import shutil as _shutil, os as _os
+_SRC_FONT = "/System/Library/Fonts/Supplemental/Times New Roman.ttf"
+FONT = "/tmp/lc_times.ttf"   # space-free copy (ffmpeg drawtext dislikes spaces in paths)
+try:
+    if not _os.path.exists(FONT):
+        _shutil.copy(_SRC_FONT, FONT)
+except Exception:
+    FONT = _SRC_FONT
 ENC = ["-r", str(FPS), "-c:v", "libx264", "-crf", "18", "-preset", "fast",
        "-pix_fmt", "yuv420p", "-video_track_timescale", str(FPS * 512)]
 
