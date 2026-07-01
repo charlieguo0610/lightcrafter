@@ -509,4 +509,26 @@ $(document).ready(function() {
     }
 
     document.querySelectorAll('.showcase-scene').forEach(wireShowcaseScene);
+
+    // ----- Teaser A/B toggle: Option A (video) vs Option B (interactive grid) -----
+    (function () {
+      var ab = document.querySelector('.teaser-ab');
+      var toggle = document.querySelector('.teaser-ab-toggle');
+      if (!ab || !toggle) return;
+      toggle.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-teaser]');
+        if (!btn) return;
+        var mode = btn.getAttribute('data-teaser');
+        ab.setAttribute('data-teaser-mode', mode);
+        Array.prototype.slice.call(toggle.querySelectorAll('button')).forEach(function (b) {
+          b.classList.toggle('is-active', b === btn);
+        });
+        if (mode === 'B') {
+          Array.prototype.slice.call(ab.querySelectorAll('.teaser-optB video')).forEach(function (v) {
+            v.muted = true; v.loop = true; v.playsInline = true;
+            v.play().catch(function () {});
+          });
+        }
+      });
+    })();
 })

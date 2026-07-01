@@ -500,6 +500,18 @@ body {
   padding-right: 1rem;
 }
 
+/* Teaser A/B toggle (Option A video vs Option B interactive grid). */
+.teaser-ab-toggle {
+  margin-bottom: 1rem;
+}
+.teaser-ab-toggle .button.is-active {
+  background-color: hsl(204, 86%, 53%);
+  color: #fff;
+  border-color: hsl(204, 86%, 47%);
+}
+.teaser-ab[data-teaser-mode="A"] .teaser-optB { display: none; }
+.teaser-ab[data-teaser-mode="B"] .teaser-optA { display: none; }
+
 /* Single large hero teaser video. */
 .teaser-hero-video {
   max-width: 1200px;

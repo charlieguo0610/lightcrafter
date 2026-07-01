@@ -82,11 +82,152 @@
 <section class="hero teaser">
   <div class="container teaser-video-wrap">
     <div class="hero-body">
-      <figure class="image teaser-hero-video">
-        <video autoplay muted loop playsinline>
-          <source src="./static/videos/teaser.mp4?v=16" type="video/mp4">
-        </video>
-      </figure>
+      <div class="buttons has-addons is-centered teaser-ab-toggle">
+        <button class="button is-rounded is-active" data-teaser="A">Option A &middot; Video</button>
+        <button class="button is-rounded" data-teaser="B">Option B &middot; Interactive</button>
+      </div>
+      <div class="teaser-ab" data-teaser-mode="A">
+        <figure class="image teaser-hero-video teaser-optA">
+          <video autoplay muted loop playsinline>
+            <source src="./static/videos/teaser.mp4?v=16" type="video/mp4">
+          </video>
+        </figure>
+        <div class="teaser-optB">
+      <div class="teaser-grid" data-ir-mode="appearance">
+        <div class="teaser-headrow">
+          <div class="teaser-head">Input</div>
+          <div class="teaser-head ir-head">
+            <span>Inverse Rendering</span>
+            <div class="buttons has-addons ir-toggle">
+              <button class="button is-small is-rounded is-active" data-ir="appearance">Appearance</button>
+              <button class="button is-small is-rounded" data-ir="geometry">Geometry</button>
+            </div>
+          </div>
+          <div class="teaser-head">Relighting via PBR &rarr; Diffusion Refinement</div>
+        </div>
+
+        <!-- Row 1: Dancing -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/lalaland/input.mp4?v=7" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/normal.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/basecolor.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/roughness.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/metallic.mp4?v=1" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/lalaland/geometry.mp4?v=3" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/lalaland/pbr.mp4?v=14" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/lalaland/relit.mp4?v=7" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Car -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/car-light-insertion/input.mp4?v=9" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/normal.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/basecolor.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/roughness.mp4?v=1" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/metallic.mp4?v=1" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/car-light-insertion/geometry.mp4?v=2" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/car-light-insertion/pbr.mp4?v=9" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/car-light-insertion/relit.mp4?v=9" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/satara_night_no_lamps_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Human -->
+        <div class="teaser-row">
+          <div class="teaser-cell">
+            <video autoplay muted loop playsinline class="teaser-video">
+              <source src="./static/videos/gallery/human/input.mp4?v=20" type="video/mp4">
+            </video>
+          </div>
+          <div class="teaser-ir">
+            <div class="teaser-quad ir-appearance" style="--shift: 0%;">
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/normal.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/basecolor.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/roughness.mp4?v=2" type="video/mp4"></video>
+              <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/metallic.mp4?v=2" type="video/mp4"></video>
+              <i class="qdiv qdiv1"></i><i class="qdiv qdiv2"></i><i class="qdiv qdiv3"></i>
+              <div class="qknob"></div>
+            </div>
+            <div class="ir-geometry">
+              <video autoplay muted loop playsinline><source src="./static/videos/gallery/human/geometry.mp4?v=2" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="teaser-slider">
+            <div class="slider-cell teaser-slider-cell" style="--pos: 50%;">
+              <video autoplay muted loop playsinline class="teaser-video slider-before">
+                <source src="./static/videos/gallery/human/pbr.mp4?v=18" type="video/mp4">
+              </video>
+              <video autoplay muted loop playsinline class="teaser-video slider-after">
+                <source src="./static/videos/gallery/human/relit.mp4?v=19" type="video/mp4">
+              </video>
+              <span class="slider-label left">PBR</span>
+              <span class="slider-label right">Relit</span>
+              <div class="slider-handle"></div>
+              <div class="slider-knob"></div>
+              <div class="showcase-probe">
+                <img src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=2" alt="Target lighting probe (chrome ball).">
+                <span class="showcase-probe-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
 
       <h2 class="subtitle has-text-centered" style="margin-top: 1.5rem;">
         Given an input video, <strong>LightCrafter</strong> utilizes inverse-rendered
