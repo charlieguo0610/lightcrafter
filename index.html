@@ -82,28 +82,17 @@
 <section class="hero teaser">
   <div class="container teaser-video-wrap">
     <div class="hero-body">
-      <div class="buttons has-addons is-centered teaser-ab-toggle">
-        <button class="button is-rounded is-active" data-teaser="A">Option A &middot; Video</button>
-        <button class="button is-rounded" data-teaser="B">Option B &middot; Interactive</button>
-      </div>
-      <div class="teaser-ab" data-teaser-mode="A">
-        <figure class="image teaser-hero-video teaser-optA">
-          <video autoplay muted loop playsinline>
-            <source src="./static/videos/teaser.mp4?v=17" type="video/mp4">
-          </video>
-        </figure>
-        <div class="teaser-optB">
       <div class="teaser-grid" data-ir-mode="appearance">
         <div class="teaser-headrow">
           <div class="teaser-head">Input</div>
           <div class="teaser-head ir-head">
-            <span>Inverse Rendering</span>
+            <span>Inverse Rendering (Reconstruction)</span>
             <div class="buttons has-addons ir-toggle">
               <button class="button is-small is-rounded is-active" data-ir="appearance">Appearance</button>
               <button class="button is-small is-rounded" data-ir="geometry">Geometry</button>
             </div>
           </div>
-          <div class="teaser-head">Relighting via PBR &rarr; Diffusion Refinement</div>
+          <div class="teaser-head">Relighting via Physically Based Rendering (PBR) &rarr; Diffusion Refinement</div>
         </div>
 
         <!-- Row 1: Dancing -->
@@ -114,6 +103,9 @@
             </video>
           </div>
           <div class="teaser-ir">
+            <div class="showcase-probe teaser-recon-probe">
+              <img src="./static/images/recon_envmaps/lalaland.png?v=1" alt="Reconstructed environment map (chrome ball).">
+            </div>
             <div class="teaser-quad ir-appearance" style="--shift: 0%;">
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/normal.mp4?v=1" type="video/mp4"></video>
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/lalaland/basecolor.mp4?v=1" type="video/mp4"></video>
@@ -135,7 +127,7 @@
                 <source src="./static/videos/gallery/lalaland/relit.mp4?v=7" type="video/mp4">
               </video>
               <span class="slider-label left">PBR</span>
-              <span class="slider-label right">Relit</span>
+              <span class="slider-label right">Refined</span>
               <div class="slider-handle"></div>
               <div class="slider-knob"></div>
               <div class="showcase-probe">
@@ -154,6 +146,9 @@
             </video>
           </div>
           <div class="teaser-ir">
+            <div class="showcase-probe teaser-recon-probe">
+              <img src="./static/images/recon_envmaps/car-light-insertion.png?v=1" alt="Reconstructed environment map (chrome ball).">
+            </div>
             <div class="teaser-quad ir-appearance" style="--shift: 0%;">
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/normal.mp4?v=1" type="video/mp4"></video>
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/car-light-insertion/basecolor.mp4?v=1" type="video/mp4"></video>
@@ -175,7 +170,7 @@
                 <source src="./static/videos/gallery/car-light-insertion/relit.mp4?v=9" type="video/mp4">
               </video>
               <span class="slider-label left">PBR</span>
-              <span class="slider-label right">Relit</span>
+              <span class="slider-label right">Refined</span>
               <div class="slider-handle"></div>
               <div class="slider-knob"></div>
               <div class="showcase-probe">
@@ -194,6 +189,9 @@
             </video>
           </div>
           <div class="teaser-ir">
+            <div class="showcase-probe teaser-recon-probe">
+              <img src="./static/images/recon_envmaps/human.png?v=1" alt="Reconstructed environment map (chrome ball).">
+            </div>
             <div class="teaser-quad ir-appearance" style="--shift: 0%;">
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/normal.mp4?v=2" type="video/mp4"></video>
               <video autoplay muted loop playsinline class="teaser-video"><source src="./static/videos/gallery/human/basecolor.mp4?v=2" type="video/mp4"></video>
@@ -215,7 +213,7 @@
                 <source src="./static/videos/gallery/human/relit.mp4?v=19" type="video/mp4">
               </video>
               <span class="slider-label left">PBR</span>
-              <span class="slider-label right">Relit</span>
+              <span class="slider-label right">Refined</span>
               <div class="slider-handle"></div>
               <div class="slider-knob"></div>
               <div class="showcase-probe">
@@ -224,8 +222,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
         </div>
       </div>
 
@@ -598,7 +594,7 @@
           <p>
             Multi-illumination relighting on a variety of scenes. Each row shows the
             input video alongside a single slider; drag the vertical handle to compare
-            <strong>PBR</strong> (left) vs <strong>Relit</strong> (right), and use the
+            <strong>PBR</strong> (left) vs <strong>Refined</strong> (right), and use the
             <strong>Illum 1&ndash;3</strong> buttons to switch the target illumination.
             The chrome-ball lighting probe in the corner previews the selected target
             environment.
@@ -635,7 +631,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1_pbr.mp4?v=11" type="video/mp4">
@@ -644,7 +640,7 @@
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1.mp4" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">
@@ -684,7 +680,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1_pbr.mp4?v=11" type="video/mp4">
@@ -693,7 +689,7 @@
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1.mp4" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">
@@ -733,7 +729,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1_pbr.mp4?v=11" type="video/mp4">
@@ -742,7 +738,7 @@
               <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1.mp4" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">
@@ -782,7 +778,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1_pbr.mp4?v=11" type="video/mp4">
@@ -791,7 +787,7 @@
               <source src="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1.mp4" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">
@@ -831,7 +827,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1_pbr.mp4?v=11" type="video/mp4">
@@ -840,7 +836,7 @@
               <source src="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1.mp4" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">
@@ -880,7 +876,7 @@
           </video>
         </div>
         <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Relit</strong></h5>
+          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
           <div class="slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="gallery-video slider-before">
               <source src="./static/videos/gallery/old-vintage-car/pbr_illum1.mp4?v=10" type="video/mp4">
@@ -889,7 +885,7 @@
               <source src="./static/videos/gallery/old-vintage-car/illum1.mp4?v=10" type="video/mp4">
             </video>
             <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Relit</span>
+            <span class="slider-label right">Refined</span>
             <div class="slider-handle"></div>
             <div class="slider-knob"></div>
             <div class="showcase-probe">

@@ -500,31 +500,6 @@ body {
   padding-right: 1rem;
 }
 
-/* Teaser A/B toggle (Option A video vs Option B interactive grid). */
-.teaser-ab-toggle {
-  margin-bottom: 1rem;
-}
-.teaser-ab-toggle .button.is-active {
-  background-color: hsl(204, 86%, 53%);
-  color: #fff;
-  border-color: hsl(204, 86%, 47%);
-}
-.teaser-ab[data-teaser-mode="A"] .teaser-optB { display: none; }
-.teaser-ab[data-teaser-mode="B"] .teaser-optA { display: none; }
-
-/* Single large hero teaser video. */
-.teaser-hero-video {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.teaser-hero-video video {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 8px;
-  background: #fff;
-}
-
 .teaser-grid {
   width: 100%;
 }
@@ -543,13 +518,21 @@ body {
 
 .teaser-head {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
   text-align: center;
   font-family: 'Google Sans', sans-serif;
   font-weight: 600;
   font-size: 0.95rem;
+  line-height: 1.25;
   color: #333;
+}
+/* Keep the three column titles on a shared top baseline; balance long wraps. */
+.teaser-head > span,
+.teaser-head:not(.ir-head) {
+  text-wrap: balance;
 }
 
 .teaser-row {
@@ -692,13 +675,9 @@ body {
 .teaser-grid[data-ir-mode="appearance"] .ir-geometry,
 .teaser-grid:not([data-ir-mode]) .ir-geometry { display: none; }
 
-/* Header label + Appearance/Geometry toggle, side by side. */
+/* Header label above the Appearance/Geometry toggle, both centered. */
 .ir-head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+  gap: 0.45rem;
 }
 .ir-toggle {
   margin: 0 !important;
