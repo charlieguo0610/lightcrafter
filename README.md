@@ -9,7 +9,7 @@
 
 <sup>1</sup>Carnegie Mellon University &nbsp;&nbsp; <sup>2</sup>University of Toronto &nbsp;&nbsp; <sup>3</sup>Bosch Research
 
-### [Project Page](https://zixinguo.me/lightcrafter/) &nbsp;|&nbsp; arXiv (coming soon)
+### [Project Page](https://zixinguo.me/lightcrafter/) &nbsp;|&nbsp; [arXiv](https://arxiv.org/abs/2607.08016)
 
 ---
 
@@ -22,3 +22,16 @@ hard-to-model effects such as global illumination.
 ## Code coming soon
 
 We will release our dataset, benchmark, metrics, and code here. Star/watch this repository for updates.
+
+## Citation
+
+If you find our work useful, please consider citing:
+
+```bibtex
+@article{guo2026lightcrafter,
+  title   = {LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting},
+  author  = {Guo, Zixin and Litman, Yehonathan and He, Yifeng and Miller, John and Chen, Chuhan and Ramanan, Deva},
+  journal = {arXiv preprint arXiv:2607.08016},
+  year    = {2026}
+}
+```
