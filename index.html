@@ -392,7 +392,7 @@
       <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
         <p>
           Because our lights are explicit 3D entities in the PBR proxy, an edit such as
-          <em>turning off half of the ceiling lights</em> or <em>keeping on a light that is
+          <em>keeping only a single ceiling light on</em> or <em>keeping on a light that is
           outside the frame</em> is rendered exactly and then refined. We compare against
           <strong>GR3EN</strong> (per-light palette masks on visible fixtures) and
           <strong>LuxRemix</strong> (given the ground-truth relit middle frame as its
@@ -401,19 +401,21 @@
           The meeting-room clip is real footage with an inserted virtual light.
           On the synthetic scenes, PBR and Ours are shown after a single per-scene
           exposure/white-balance gain estimated from the input lighting condition only
-          (the same calibration used in our quantitative comparison).
+          (the same calibration used in our quantitative comparison). LuxRemix operates on
+          the central square of each frame (its native 512&times;512 input), so the side
+          margins it never predicts are shown in black.
           Pick a scene and the method on each side of the slider.
         </p>
       </div>
-      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare" data-ver="3"
-           data-scene="indoor-scene110" data-left="gt" data-right="ours">
+      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare" data-ver="4"
+           data-scene="indoor-scene108" data-left="gt" data-right="ours">
         <div class="synthetic-controls">
           <div class="control-group">
             <span class="control-label">Scene</span>
             <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
-              <button class="button is-small is-rounded is-active" data-scene="indoor-scene110"
-                      data-base="./static/videos/comparison/indoor-scene110"
-                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Kitchen: half of ceiling lights off</button>
+              <button class="button is-small is-rounded is-active" data-scene="indoor-scene108"
+                      data-base="./static/videos/comparison/indoor-scene108"
+                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Shelf room: single ceiling light on</button>
               <button class="button is-small is-rounded" data-scene="indoor-scene109"
                       data-base="./static/videos/comparison/indoor-scene109"
                       data-avail="input,gt,pbr,ours,gr3en,luxremix">Living room: single out-of-view light</button>
@@ -448,10 +450,10 @@
         <div class="synthetic-slider-wrap">
           <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
             <video autoplay muted loop playsinline class="comparison-video slider-before">
-              <source src="./static/videos/comparison/indoor-scene110/gt.mp4?v=2" type="video/mp4">
+              <source src="./static/videos/comparison/indoor-scene108/gt.mp4?v=4" type="video/mp4">
             </video>
             <video autoplay muted loop playsinline class="comparison-video slider-after">
-              <source src="./static/videos/comparison/indoor-scene110/ours.mp4?v=2" type="video/mp4">
+              <source src="./static/videos/comparison/indoor-scene108/ours.mp4?v=4" type="video/mp4">
             </video>
             <span class="slider-label left gc-left-label">Target (GT)</span>
             <span class="slider-label right gc-right-label">Ours</span>
