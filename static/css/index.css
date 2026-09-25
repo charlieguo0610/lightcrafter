@@ -885,3 +885,39 @@ body {
   color: #555;
   background: #fafafa;
 }
+
+/* ---- MIT multi-illumination image card ---- */
+.mit-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.75rem;
+}
+.mit-card .synthetic-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1rem;
+  flex: 0 0 auto;
+  width: 250px;
+}
+.mit-card .control-group { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; width: 100%; }
+.mit-card .control-label { font-family: 'Google Sans', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #444; }
+.mit-card .scene-picker, .mit-card .mit-light-picker { margin-bottom: 0 !important; flex-wrap: wrap; justify-content: flex-start; gap: 0.3rem; }
+.mit-card .buttons.has-addons .button { margin: 0 !important; border-radius: 9999px !important; }
+.mit-card .scene-picker .button.is-active, .mit-card .mit-light-picker .button.is-active {
+  background-color: hsl(204, 86%, 53%); color: white; border-color: hsl(204, 86%, 47%);
+}
+.mit-card .mit-ball { width: 96px; height: 96px; margin-top: 0.4rem; }
+.mit-card .mit-grid {
+  flex: 1 1 640px;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+.mit-card .mit-grid figure { margin: 0; }
+.mit-card .mit-grid img { width: 100%; display: block; border-radius: 4px; }
+.mit-card .mit-grid figcaption { font-size: 0.85rem; text-align: center; margin-top: 0.2rem; color: #333; }
+@media (max-width: 900px) { .mit-card .mit-grid { grid-template-columns: repeat(2, 1fr); } }

@@ -392,29 +392,35 @@ $(document).ready(function() {
 
     wireSyntheticComparison();
 
-    // ----- Real-world comparison: single scene, choose method per slider side -----
-    function wireRealworldComparison() {
-      var root = document.getElementById('realworld-compare');
-      if (!root) return;
-      var base = root.getAttribute('data-base');
+    // ----- Generic comparison card: scene picker (each scene button carries its own
+    //       data-base folder and data-avail method list) + left/right method pickers -----
+    function wireGenericComparison(root) {
       var cell = root.querySelector('.synthetic-slider-cell');
+      if (!cell) return;
       var beforeVid = cell.querySelector('video.slider-before');
       var afterVid = cell.querySelector('video.slider-after');
-      var leftLabel = root.querySelector('.rw-left-label');
-      var rightLabel = root.querySelector('.rw-right-label');
-      var leftPicker = root.querySelector('.rw-left-picker');
-      var rightPicker = root.querySelector('.rw-right-picker');
+      var leftLabel = root.querySelector('.gc-left-label');
+      var rightLabel = root.querySelector('.gc-right-label');
+      var scenePicker = root.querySelector('.gc-scene-picker');
+      var leftPicker = root.querySelector('.gc-left-picker');
+      var rightPicker = root.querySelector('.gc-right-picker');
+      var VER = root.getAttribute('data-ver') || '1';
 
-      var FILE = {
-        input: 'input', pbr: 'pbr', ours: 'ours', dr: 'dr',
-        lightx: 'lightx', unirelight: 'unirelight', pcrp: 'pcrp'
-      };
-      var LABEL = {
-        input: 'Input', pbr: 'PBR', ours: 'Ours', dr: 'DiffusionRenderer',
-        lightx: 'LightX', unirelight: 'UniRelight', pcrp: 'PCRP-Video'
-      };
-
-      function srcFor(method) { return base + '/' + FILE[method] + '.mp4?v=5'; }
+      function sceneBtn(scene) {
+        return scenePicker.querySelector('button[data-scene="' + scene + '"]');
+      }
+      function availFor(scene) {
+        var b = sceneBtn(scene);
+        return b ? (b.getAttribute('data-avail') || '').split(',') : [];
+      }
+      function labelFor(picker, method) {
+        var b = picker.querySelector('button[data-method="' + method + '"]');
+        return b ? b.textContent.trim() : method;
+      }
+      function srcFor(scene, method) {
+        var b = sceneBtn(scene);
+        return b.getAttribute('data-base') + '/' + method + '.mp4?v=' + VER;
+      }
       function setVideo(video, url) {
         var s = video.querySelector('source');
         if (!s) return;
@@ -423,38 +429,107 @@ $(document).ready(function() {
         video.load();
         video.play().catch(function () { /* ignore */ });
       }
-      function setActive(group, value) {
+      function setActive(group, attr, value) {
         Array.prototype.slice.call(group.querySelectorAll('button')).forEach(function (b) {
-          if (b.getAttribute('data-method') === value) b.classList.add('is-active');
-          else b.classList.remove('is-active');
+          b.classList.toggle('is-active', b.getAttribute(attr) === value);
         });
       }
-      function render() {
-        var left = root.getAttribute('data-left');
-        var right = root.getAttribute('data-right');
-        setActive(leftPicker, left);
-        setActive(rightPicker, right);
-        setVideo(beforeVid, srcFor(left));
-        setVideo(afterVid, srcFor(right));
-        if (leftLabel) leftLabel.textContent = LABEL[left];
-        if (rightLabel) rightLabel.textContent = LABEL[right];
+      function applyAvailability(scene) {
+        var avail = availFor(scene);
+        [leftPicker, rightPicker].forEach(function (group) {
+          Array.prototype.slice.call(group.querySelectorAll('button[data-method]'))
+            .forEach(function (b) {
+              var ok = avail.indexOf(b.getAttribute('data-method')) !== -1;
+              b.disabled = !ok;
+              b.classList.toggle('is-disabled', !ok);
+            });
+        });
       }
-      leftPicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-method]');
+      function resolve(scene, method, fallback) {
+        var avail = availFor(scene);
+        if (avail.indexOf(method) !== -1) return method;
+        if (avail.indexOf(fallback) !== -1) return fallback;
+        return avail[0] || method;
+      }
+      function render() {
+        var scene = root.getAttribute('data-scene');
+        var left = resolve(scene, root.getAttribute('data-left'), 'input');
+        var right = resolve(scene, root.getAttribute('data-right'), 'ours');
+        root.setAttribute('data-left', left);
+        root.setAttribute('data-right', right);
+        applyAvailability(scene);
+        setActive(scenePicker, 'data-scene', scene);
+        setActive(leftPicker, 'data-method', left);
+        setActive(rightPicker, 'data-method', right);
+        setVideo(beforeVid, srcFor(scene, left));
+        setVideo(afterVid, srcFor(scene, right));
+        if (leftLabel) leftLabel.textContent = labelFor(leftPicker, left);
+        if (rightLabel) rightLabel.textContent = labelFor(rightPicker, right);
+      }
+      scenePicker.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-scene]');
         if (!btn) return;
-        root.setAttribute('data-left', btn.getAttribute('data-method'));
+        root.setAttribute('data-scene', btn.getAttribute('data-scene'));
         render();
       });
-      rightPicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-method]');
+      [['data-left', leftPicker], ['data-right', rightPicker]].forEach(function (pair) {
+        pair[1].addEventListener('click', function (e) {
+          var btn = e.target.closest('button[data-method]');
+          if (!btn || btn.disabled) return;
+          root.setAttribute(pair[0], btn.getAttribute('data-method'));
+          render();
+        });
+      });
+      render();
+    }
+
+    document.querySelectorAll('.generic-compare').forEach(wireGenericComparison);
+
+    // ----- MIT multi-illumination image card: scene + target-light pickers -----
+    function wireMitCard() {
+      var root = document.getElementById('mit-compare');
+      if (!root) return;
+      var base = root.getAttribute('data-base');
+      var scenePicker = root.querySelector('.mit-scene-picker');
+      var lightPicker = root.querySelector('.mit-light-picker');
+      var ball = root.querySelector('.mit-ball');
+      var imgs = Array.prototype.slice.call(root.querySelectorAll('.mit-grid img[data-m]'));
+
+      function render() {
+        var scene = root.getAttribute('data-scene');
+        var sBtn = scenePicker.querySelector('button[data-scene="' + scene + '"]');
+        var lights = (sBtn.getAttribute('data-lights') || '').split(',');
+        var light = root.getAttribute('data-light');
+        if (lights.indexOf(light) === -1) { light = lights[0]; root.setAttribute('data-light', light); }
+        Array.prototype.slice.call(scenePicker.querySelectorAll('button')).forEach(function (b) {
+          b.classList.toggle('is-active', b.getAttribute('data-scene') === scene);
+        });
+        Array.prototype.slice.call(lightPicker.querySelectorAll('button')).forEach(function (b, i) {
+          var l = lights[i];
+          b.style.display = l ? '' : 'none';
+          if (l) { b.setAttribute('data-light', l); b.textContent = 'Light ' + (i + 1); }
+          b.classList.toggle('is-active', l === light);
+        });
+        var dir = base + '/' + scene + '/' + light + '/';
+        imgs.forEach(function (im) { im.setAttribute('src', dir + im.getAttribute('data-m') + '.jpg'); });
+        if (ball) ball.setAttribute('src', dir + 'ball.png');
+      }
+      scenePicker.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-scene]');
         if (!btn) return;
-        root.setAttribute('data-right', btn.getAttribute('data-method'));
+        root.setAttribute('data-scene', btn.getAttribute('data-scene'));
+        render();
+      });
+      lightPicker.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-light]');
+        if (!btn) return;
+        root.setAttribute('data-light', btn.getAttribute('data-light'));
         render();
       });
       render();
     }
 
-    wireRealworldComparison();
+    wireMitCard();
 
     // ----- Showcase scenes: pick illum for the slider + inline lighting probe -----
     function wireShowcaseScene(card) {

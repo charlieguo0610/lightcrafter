@@ -18,14 +18,14 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/index.css?v=2">
   <link rel="icon" href="./static/images/favicon.svg">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+  <script src="./static/js/index.js?v=2"></script>
 </head>
 <body>
 
@@ -387,26 +387,74 @@
     </div>
 
     <!-- 3. Indoor Light Insertion (3-col: input | pbr | relit) -->
-    <div class="gallery-card is-grid" id="gallery-indoor-light" style="--cols: 3;">
-      <h3 class="title is-4">Indoor Light Insertion</h3>
-      <div class="columns is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/indoor-light-insertion/input.mp4?v=4" type="video/mp4">
-          </video>
+    <div class="gallery-card" id="gallery-indoor-light">
+      <h3 class="title is-4">Indoor Light Editing vs. GR3EN and LuxRemix</h3>
+      <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
+        <p>
+          Because our lights are explicit 3D entities in the PBR proxy, an edit such as
+          <em>turning off half of the ceiling lights</em> or <em>keeping on a light that is
+          outside the frame</em> is rendered exactly and then refined. We compare against
+          <strong>GR3EN</strong> (per-light palette masks on visible fixtures) and
+          <strong>LuxRemix</strong> (given the ground-truth relit middle frame as its
+          reference) on synthetic indoor scenes generated with Infinigen, the generator
+          behind GR3EN's own training data, where an exact re-rendered target exists.
+          The meeting-room clip is real footage with an inserted virtual light.
+          Pick a scene and the method on each side of the slider.
+        </p>
+      </div>
+      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare"
+           data-scene="indoor-scene110" data-left="gt" data-right="ours">
+        <div class="synthetic-controls">
+          <div class="control-group">
+            <span class="control-label">Scene</span>
+            <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
+              <button class="button is-small is-rounded is-active" data-scene="indoor-scene110"
+                      data-base="./static/videos/comparison/indoor-scene110"
+                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Kitchen: half of ceiling lights off</button>
+              <button class="button is-small is-rounded" data-scene="indoor-scene109"
+                      data-base="./static/videos/comparison/indoor-scene109"
+                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Living room: single out-of-view light</button>
+              <button class="button is-small is-rounded" data-scene="indoor-meetingroom"
+                      data-base="./static/videos/comparison/indoor-meetingroom"
+                      data-avail="input,pbr,ours">Meeting room: inserted light (real)</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <span class="control-label">Left</span>
+            <div class="buttons has-addons is-centered method-picker gc-left-picker">
+              <button class="button is-small is-rounded" data-method="input">Input</button>
+              <button class="button is-small is-rounded is-active" data-method="gt">Target (GT)</button>
+              <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+              <button class="button is-small is-rounded" data-method="ours">Ours</button>
+              <button class="button is-small is-rounded" data-method="gr3en">GR3EN</button>
+              <button class="button is-small is-rounded" data-method="luxremix">LuxRemix</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <span class="control-label">Right</span>
+            <div class="buttons has-addons is-centered method-picker gc-right-picker">
+              <button class="button is-small is-rounded" data-method="input">Input</button>
+              <button class="button is-small is-rounded" data-method="gt">Target (GT)</button>
+              <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+              <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
+              <button class="button is-small is-rounded" data-method="gr3en">GR3EN</button>
+              <button class="button is-small is-rounded" data-method="luxremix">LuxRemix</button>
+            </div>
+          </div>
         </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">PBR</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/indoor-light-insertion/pbr.mp4?v=16" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Relit</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/indoor-light-insertion/relit.mp4?v=16" type="video/mp4">
-          </video>
+        <div class="synthetic-slider-wrap">
+          <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
+            <video autoplay muted loop playsinline class="comparison-video slider-before">
+              <source src="./static/videos/comparison/indoor-scene110/gt.mp4?v=1" type="video/mp4">
+            </video>
+            <video autoplay muted loop playsinline class="comparison-video slider-after">
+              <source src="./static/videos/comparison/indoor-scene110/ours.mp4?v=1" type="video/mp4">
+            </video>
+            <span class="slider-label left gc-left-label">Target (GT)</span>
+            <span class="slider-label right gc-right-label">Ours</span>
+            <div class="slider-handle"></div>
+            <div class="slider-knob"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -456,8 +504,9 @@
             We compare against <strong>PCRP-Video</strong>, <strong>UniRelight</strong>,
             <strong>LightX</strong>, and <strong>DiffusionRenderer</strong> on long video
             relighting tasks. Choose which method appears on each side of the slider and
-            drag the handle to A/B the results &mdash; on a real-world scene below, and on
-            our synthetic benchmark (where a held-out Target is also available).
+            drag the handle to A/B the results &mdash; on in-the-wild and held-out DL3DV
+            real-world scenes, on paired real MIT Multi-Illumination captures with ground
+            truth, and on our synthetic benchmark (where a held-out Target is also available).
           </p>
           <p>
             Baselines often produce plausible relighting but entangle illumination with
@@ -472,17 +521,48 @@
 
     <!-- Real-world scene label -->
     <div class="has-text-centered" style="margin: 0.5rem 0 0.75rem;">
-      <span class="scene-group-label">Real-world Scene</span>
+      <span class="scene-group-label">Real-world Scenes</span>
+    </div>
+    <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
+      <p>
+        <strong>In-the-wild</strong>: a coastal drone clip relit under a new HDR environment map.
+        <strong>DL3DV round trip</strong> (held-out scenes, following Light-X): the original
+        video is first relit by Light-A-Video to produce the <em>Input</em>; every method then
+        relights it back to the original illumination, so the original video serves as the
+        <em>Reference</em>. <strong>DL3DV reconstruction</strong>: the scene is re-rendered
+        under its estimated original illumination and refined; the original video is the reference.
+      </p>
     </div>
 
-    <!-- Interactive figure: choose the method on each side of the before/after slider. -->
-    <div class="comparison-card synthetic-compare" id="realworld-compare"
-         data-base="./static/videos/comparison/realworld-row" data-left="input" data-right="ours">
+    <!-- Interactive figure: pick a scene, then the method on each side of the slider. -->
+    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare"
+         data-scene="realworld-row" data-left="input" data-right="ours">
       <div class="synthetic-controls">
         <div class="control-group">
+          <span class="control-label">Scene</span>
+          <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
+            <button class="button is-small is-rounded is-active" data-scene="realworld-row"
+                    data-base="./static/videos/comparison/realworld-row"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp">In-the-wild lighthouse</button>
+            <button class="button is-small is-rounded" data-scene="rw-park-path"
+                    data-base="./static/videos/comparison/rw-park-path"
+                    data-avail="input,gt,pbr,ours,lightx,unirelight">DL3DV park path (round trip)</button>
+            <button class="button is-small is-rounded" data-scene="rw-park-bench"
+                    data-base="./static/videos/comparison/rw-park-bench"
+                    data-avail="input,gt,pbr,ours,lightx,unirelight">DL3DV park bench (round trip)</button>
+            <button class="button is-small is-rounded" data-scene="rw-recon-00b1ad"
+                    data-base="./static/videos/comparison/rw-recon-00b1ad"
+                    data-avail="input,pbr,ours">DL3DV reconstruction 1</button>
+            <button class="button is-small is-rounded" data-scene="rw-recon-010cf7"
+                    data-base="./static/videos/comparison/rw-recon-010cf7"
+                    data-avail="input,pbr,ours">DL3DV reconstruction 2</button>
+          </div>
+        </div>
+        <div class="control-group">
           <span class="control-label">Left</span>
-          <div class="buttons has-addons is-centered method-picker rw-left-picker">
+          <div class="buttons has-addons is-centered method-picker gc-left-picker">
             <button class="button is-small is-rounded is-active" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="gt">Reference</button>
             <button class="button is-small is-rounded" data-method="pbr">PBR</button>
             <button class="button is-small is-rounded" data-method="ours">Ours</button>
             <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
@@ -493,8 +573,9 @@
         </div>
         <div class="control-group">
           <span class="control-label">Right</span>
-          <div class="buttons has-addons is-centered method-picker rw-right-picker">
+          <div class="buttons has-addons is-centered method-picker gc-right-picker">
             <button class="button is-small is-rounded" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="gt">Reference</button>
             <button class="button is-small is-rounded" data-method="pbr">PBR</button>
             <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
             <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
@@ -513,11 +594,58 @@
           <video autoplay muted loop playsinline class="comparison-video slider-after">
             <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
           </video>
-          <span class="slider-label left rw-left-label">Input</span>
-          <span class="slider-label right rw-right-label">Ours</span>
+          <span class="slider-label left gc-left-label">Input</span>
+          <span class="slider-label right gc-right-label">Ours</span>
           <div class="slider-handle"></div>
           <div class="slider-knob"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- MIT Multi-Illumination: paired real relighting with ground truth -->
+    <div class="has-text-centered" style="margin: 1.5rem 0 0.75rem;">
+      <span class="scene-group-label">MIT Multi-Illumination (real, paired ground truth)</span>
+    </div>
+    <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
+      <p>
+        Real indoor scenes from the held-out <em>everett</em> building of the MIT
+        Multi-Illumination dataset, each captured under 25 flash directions. Every method
+        relights the same input to the selected target light (chrome ball), and the real
+        capture under that light is the ground truth. Note the displaced highlights on the
+        brushed-steel pot and the sink rim.
+      </p>
+    </div>
+    <div class="comparison-card mit-card" id="mit-compare" data-base="./static/images/mit"
+         data-scene="everett_kitchen14" data-light="dir_20">
+      <div class="synthetic-controls">
+        <div class="control-group">
+          <span class="control-label">Scene</span>
+          <div class="buttons has-addons is-centered scene-picker mit-scene-picker">
+            <button class="button is-small is-rounded is-active" data-scene="everett_kitchen14" data-lights="dir_20,dir_22,dir_18">Brushed-steel pot</button>
+            <button class="button is-small is-rounded" data-scene="everett_kitchen4" data-lights="dir_22,dir_20,dir_02">Kitchen sink</button>
+            <button class="button is-small is-rounded" data-scene="everett_dining1" data-lights="dir_22">Dining table</button>
+            <button class="button is-small is-rounded" data-scene="everett_kitchen18" data-lights="dir_13">Cabinet</button>
+            <button class="button is-small is-rounded" data-scene="everett_kitchen2" data-lights="dir_19">Bottles</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <span class="control-label">Target light</span>
+          <div class="buttons has-addons is-centered mit-light-picker">
+            <button class="button is-small is-rounded is-active" data-light="dir_20">Light 1</button>
+            <button class="button is-small is-rounded" data-light="dir_22">Light 2</button>
+            <button class="button is-small is-rounded" data-light="dir_18">Light 3</button>
+          </div>
+          <img class="mit-ball" alt="Target light probe" src="./static/images/mit/everett_kitchen14/dir_20/ball.png">
+        </div>
+      </div>
+      <div class="mit-grid">
+        <figure><img data-m="input" src="./static/images/mit/everett_kitchen14/dir_20/input.jpg" alt=""><figcaption>Input</figcaption></figure>
+        <figure><img data-m="gt" src="./static/images/mit/everett_kitchen14/dir_20/gt.jpg" alt=""><figcaption>Relit GT</figcaption></figure>
+        <figure><img data-m="ours" src="./static/images/mit/everett_kitchen14/dir_20/ours.jpg" alt=""><figcaption>Ours</figcaption></figure>
+        <figure><img data-m="pbr" src="./static/images/mit/everett_kitchen14/dir_20/pbr.jpg" alt=""><figcaption>PBR</figcaption></figure>
+        <figure><img data-m="dr" src="./static/images/mit/everett_kitchen14/dir_20/dr.jpg" alt=""><figcaption>DiffusionRenderer</figcaption></figure>
+        <figure><img data-m="lightx" src="./static/images/mit/everett_kitchen14/dir_20/lightx.jpg" alt=""><figcaption>LightX</figcaption></figure>
+        <figure><img data-m="unirelight" src="./static/images/mit/everett_kitchen14/dir_20/unirelight.jpg" alt=""><figcaption>UniRelight</figcaption></figure>
       </div>
     </div>
 
@@ -902,6 +1030,7 @@
 </section>
 
 
+
 <!-- BibTeX -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
@@ -914,6 +1043,7 @@
 }</code></pre>
   </div>
 </section>
+
 
 <footer class="footer">
   <div class="container">
