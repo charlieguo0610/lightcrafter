@@ -524,17 +524,16 @@
     </div>
     <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
       <p>
-        <strong>City street &rarr; noon sun</strong>: an overcast driving clip relit to a clear-sky HDR environment map; the target map is shown under the slider so sky color, sun direction and shadow depth can be checked against it for every method. <strong>In-the-wild</strong>: a coastal drone clip relit under a new HDR environment map.
-        <strong>DL3DV round trip</strong> (held-out scenes, following Light-X): the original
+        <strong>Real-world relighting</strong>: in-the-wild driving, film and drone clips relit to a new HDR environment map. These are the exact clips shown to participants in our user study (Sec.&nbsp;4). The target map is shown under the slider as a panorama and a chrome-ball probe (the sun is marked in red when it is a hard, dominant light) so sky color, sun direction and shadow depth can be checked against it for every method.
+        <strong>DL3DV round trip</strong> (held-out scene, following Light-X): the original
         video is first relit by Light-A-Video to produce the <em>Input</em>; every method then
         relights it back to the original illumination, so the original video serves as the
-        <em>Reference</em>. <strong>DL3DV reconstruction</strong>: the scene is re-rendered
-        under its estimated original illumination and refined; the original video is the reference.
+        <em>Reference</em> and its estimated illumination is the target map.
       </p>
     </div>
 
     <!-- Interactive figure: pick a scene, then the method on each side of the slider. -->
-    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare" data-ver="6"
+    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare" data-ver="7"
          data-scene="rw-trolley-kiara" data-left="pbr" data-right="ours">
       <div class="synthetic-controls">
         <div class="control-group">
@@ -546,21 +545,51 @@
                     data-envmap="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1"
                     data-envball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
                     data-envcap="Target lighting: kiara_5_noon (clear sky, sun at 51&deg; elevation, marked in red). A faithful relight should turn the overcast sky deep blue and cast a deep, oblique shadow from the trolley onto the road.">City street &rarr; noon sun</button>
+            <button class="button is-small is-rounded" data-scene="rw-vintage-car-noon"
+                    data-base="./static/videos/comparison/rw-vintage-car-noon"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
+                    data-envcap="Target lighting: kiara_5_noon (clear sky, hard sun at 51&deg; elevation, marked in red). Look for a crisp shadow under the car, a blue sky and neutral colors; the road should stay gray rather than tinted.">Vintage car &rarr; noon sun</button>
+            <button class="button is-small is-rounded" data-scene="rw-drive1-autumn"
+                    data-base="./static/videos/comparison/rw-drive1-autumn"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/autumn_field_puresky_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
+                    data-envcap="Target lighting: autumn_field_puresky (clear sky, low sun at 29&deg; elevation, marked in red). Expect a deep-blue sky and long, hard shadows in the sun direction, with the scene otherwise unchanged.">Downtown drive &rarr; clear sky</button>
+            <button class="button is-small is-rounded" data-scene="rw-drive3-autumn"
+                    data-base="./static/videos/comparison/rw-drive3-autumn"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/autumn_field_puresky_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
+                    data-envcap="Target lighting: autumn_field_puresky (clear sky, low sun at 29&deg; elevation, marked in red). Expect a deep-blue sky and long, hard shadows in the sun direction, with the scene otherwise unchanged.">Parking lot &rarr; clear sky</button>
+            <button class="button is-small is-rounded" data-scene="rw-europe-misty"
+                    data-base="./static/videos/comparison/rw-europe-misty"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
+                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Baroque palace &rarr; misty morning</button>
+            <button class="button is-small is-rounded" data-scene="rw-drive2-misty"
+                    data-base="./static/videos/comparison/rw-drive2-misty"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
+                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Highway &rarr; misty morning</button>
+            <button class="button is-small is-rounded" data-scene="rw-lalaland-misty"
+                    data-base="./static/videos/comparison/rw-lalaland-misty"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
+                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
+                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Dancers &rarr; misty morning</button>
             <button class="button is-small is-rounded" data-scene="realworld-row"
                     data-base="./static/videos/comparison/realworld-row"
                     data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp">In-the-wild lighthouse</button>
-            <button class="button is-small is-rounded" data-scene="rw-park-path"
-                    data-base="./static/videos/comparison/rw-park-path"
-                    data-avail="input,gt,pbr,ours,lightx,unirelight">DL3DV park path (round trip)</button>
-            <button class="button is-small is-rounded" data-scene="rw-park-bench"
-                    data-base="./static/videos/comparison/rw-park-bench"
-                    data-avail="input,gt,pbr,ours,lightx,unirelight">DL3DV park bench (round trip)</button>
-            <button class="button is-small is-rounded" data-scene="rw-recon-00b1ad"
-                    data-base="./static/videos/comparison/rw-recon-00b1ad"
-                    data-avail="input,pbr,ours">DL3DV reconstruction 1</button>
-            <button class="button is-small is-rounded" data-scene="rw-recon-010cf7"
-                    data-base="./static/videos/comparison/rw-recon-010cf7"
-                    data-avail="input,pbr,ours">DL3DV reconstruction 2</button>
+            <button class="button is-small is-rounded" data-scene="rw-dl3dv-boardwalk"
+                    data-base="./static/videos/comparison/rw-dl3dv-boardwalk"
+                    data-avail="input,gt,pbr,ours,dr,lightx,unirelight"
+                    data-envmap="./static/images/envmaps/dl3dv_00b1ad_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/dl3dv_00b1ad_ball.png?v=1"
+                    data-envcap="Target lighting: the illumination estimated from the original DL3DV capture (overcast, no dominant sun). A faithful round trip should recover the original video (Reference) from the moonlit Input; compare each method against Reference.">DL3DV boardwalk (round trip)</button>
           </div>
         </div>
         <div class="control-group">
@@ -594,10 +623,10 @@
       <div class="synthetic-slider-wrap">
         <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
           <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/rw-trolley-kiara/pbr.mp4?v=6" type="video/mp4">
+            <source src="./static/videos/comparison/rw-trolley-kiara/pbr.mp4?v=7" type="video/mp4">
           </video>
           <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/rw-trolley-kiara/ours.mp4?v=6" type="video/mp4">
+            <source src="./static/videos/comparison/rw-trolley-kiara/ours.mp4?v=7" type="video/mp4">
           </video>
           <span class="slider-label left gc-left-label">PBR</span>
           <span class="slider-label right gc-right-label">Ours</span>
