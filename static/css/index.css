@@ -921,3 +921,37 @@ body {
 .mit-card .mit-grid img { width: 100%; display: block; border-radius: 4px; }
 .mit-card .mit-grid figcaption { font-size: 0.85rem; text-align: center; margin-top: 0.2rem; color: #333; }
 @media (max-width: 900px) { .mit-card .mit-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Target environment map panel under a generic comparison slider. */
+.gc-envmap {
+  position: relative;
+  margin: 0.6rem auto 0;
+  max-width: 960px;
+  padding: 0 0.25rem;
+}
+.gc-envmap .gc-envmap-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+.gc-envmap .gc-envmap-ball {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 11%;
+  max-width: 96px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+.gc-envmap .gc-envmap-cap {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  text-align: center;
+}

@@ -465,6 +465,24 @@ $(document).ready(function() {
         setVideo(afterVid, srcFor(scene, right));
         if (leftLabel) leftLabel.textContent = labelFor(leftPicker, left);
         if (rightLabel) rightLabel.textContent = labelFor(rightPicker, right);
+        // Optional per-scene target-envmap panel (panorama + probe + caption).
+        var env = root.querySelector('.gc-envmap');
+        if (env) {
+          var sb = sceneBtn(scene);
+          var pano = sb ? sb.getAttribute('data-envmap') : null;
+          if (pano) {
+            env.style.display = '';
+            var pi = env.querySelector('.gc-envmap-img');
+            if (pi && pi.getAttribute('src') !== pano) pi.setAttribute('src', pano);
+            var ball = sb.getAttribute('data-envball');
+            var bi = env.querySelector('.gc-envmap-ball');
+            if (bi) { if (ball) { bi.style.display = ''; if (bi.getAttribute('src') !== ball) bi.setAttribute('src', ball); } else { bi.style.display = 'none'; } }
+            var cap = env.querySelector('.gc-envmap-cap');
+            if (cap) cap.innerHTML = sb.getAttribute('data-envcap') || '';
+          } else {
+            env.style.display = 'none';
+          }
+        }
       }
       scenePicker.addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-scene]');

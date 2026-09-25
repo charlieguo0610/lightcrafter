@@ -18,14 +18,14 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css?v=2">
+  <link rel="stylesheet" href="./static/css/index.css?v=3">
   <link rel="icon" href="./static/images/favicon.svg">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js?v=2"></script>
+  <script src="./static/js/index.js?v=3"></script>
 </head>
 <body>
 
@@ -524,7 +524,7 @@
     </div>
     <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
       <p>
-        <strong>In-the-wild</strong>: a coastal drone clip relit under a new HDR environment map.
+        <strong>City street &rarr; noon sun</strong>: an overcast driving clip relit to a clear-sky HDR environment map; the target map is shown under the slider so sky color, sun direction and shadow depth can be checked against it for every method. <strong>In-the-wild</strong>: a coastal drone clip relit under a new HDR environment map.
         <strong>DL3DV round trip</strong> (held-out scenes, following Light-X): the original
         video is first relit by Light-A-Video to produce the <em>Input</em>; every method then
         relights it back to the original illumination, so the original video serves as the
@@ -534,13 +534,19 @@
     </div>
 
     <!-- Interactive figure: pick a scene, then the method on each side of the slider. -->
-    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare"
-         data-scene="realworld-row" data-left="input" data-right="ours">
+    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare" data-ver="6"
+         data-scene="rw-trolley-kiara" data-left="pbr" data-right="ours">
       <div class="synthetic-controls">
         <div class="control-group">
           <span class="control-label">Scene</span>
           <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
-            <button class="button is-small is-rounded is-active" data-scene="realworld-row"
+            <button class="button is-small is-rounded is-active" data-scene="rw-trolley-kiara"
+                    data-base="./static/videos/comparison/rw-trolley-kiara"
+                    data-avail="input,pbr,ours,dr,lightx,unirelight"
+                    data-envmap="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1"
+                    data-envball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
+                    data-envcap="Target lighting: kiara_5_noon (clear sky, sun at 51&deg; elevation, marked in red). A faithful relight should turn the overcast sky deep blue and cast a deep, oblique shadow from the trolley onto the road.">City street &rarr; noon sun</button>
+            <button class="button is-small is-rounded" data-scene="realworld-row"
                     data-base="./static/videos/comparison/realworld-row"
                     data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp">In-the-wild lighthouse</button>
             <button class="button is-small is-rounded" data-scene="rw-park-path"
@@ -560,9 +566,9 @@
         <div class="control-group">
           <span class="control-label">Left</span>
           <div class="buttons has-addons is-centered method-picker gc-left-picker">
-            <button class="button is-small is-rounded is-active" data-method="input">Input</button>
+            <button class="button is-small is-rounded" data-method="input">Input</button>
             <button class="button is-small is-rounded" data-method="gt">Reference</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
+            <button class="button is-small is-rounded is-active" data-method="pbr">PBR</button>
             <button class="button is-small is-rounded" data-method="ours">Ours</button>
             <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
             <button class="button is-small is-rounded" data-method="lightx">LightX</button>
@@ -588,15 +594,20 @@
       <div class="synthetic-slider-wrap">
         <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
           <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/realworld-row/input.mp4?v=5" type="video/mp4">
+            <source src="./static/videos/comparison/rw-trolley-kiara/pbr.mp4?v=6" type="video/mp4">
           </video>
           <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/realworld-row/ours.mp4?v=5" type="video/mp4">
+            <source src="./static/videos/comparison/rw-trolley-kiara/ours.mp4?v=6" type="video/mp4">
           </video>
-          <span class="slider-label left gc-left-label">Input</span>
+          <span class="slider-label left gc-left-label">PBR</span>
           <span class="slider-label right gc-right-label">Ours</span>
           <div class="slider-handle"></div>
           <div class="slider-knob"></div>
+        </div>
+        <div class="gc-envmap">
+          <img class="gc-envmap-img" src="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1" alt="Target environment map (equirectangular)">
+          <img class="gc-envmap-ball" src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1" alt="Target lighting probe">
+          <p class="gc-envmap-cap"></p>
         </div>
       </div>
     </div>
