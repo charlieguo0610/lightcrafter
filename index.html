@@ -398,10 +398,12 @@
           <strong>LuxRemix</strong> (given the ground-truth relit middle frame as its
           reference) on synthetic indoor scenes generated with Infinigen, the generator
           behind GR3EN's own training data, where an exact re-rendered target exists.
-          The meeting-room clip is real footage with an inserted virtual light.
+          The meeting-room clip is real footage with an inserted virtual light (no ground
+          truth); the <em>Light mask</em> panel shows the light masks used to drive the
+          baselines on this clip.
         </p>
       </div>
-      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare" data-ver="8"
+      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare" data-ver="9"
            data-scene="indoor-scene108" data-left="gt" data-right="ours">
         <div class="synthetic-controls">
           <div class="control-group">
@@ -415,13 +417,14 @@
                       data-avail="input,gt,pbr,ours,gr3en,luxremix">Living room: single out-of-view light</button>
               <button class="button is-small is-rounded" data-scene="indoor-meetingroom"
                       data-base="./static/videos/comparison/indoor-meetingroom"
-                      data-avail="input,pbr,ours">Meeting room: inserted light (real)</button>
+                      data-avail="input,mask,pbr,ours,gr3en,luxremix">Meeting room: inserted light (real)</button>
             </div>
           </div>
           <div class="control-group">
             <span class="control-label">Left</span>
             <div class="buttons has-addons is-centered method-picker gc-left-picker">
               <button class="button is-small is-rounded" data-method="input">Input</button>
+              <button class="button is-small is-rounded" data-method="mask">Light mask</button>
               <button class="button is-small is-rounded is-active" data-method="gt">Target (GT)</button>
               <button class="button is-small is-rounded" data-method="pbr">PBR</button>
               <button class="button is-small is-rounded" data-method="ours">Ours</button>
@@ -433,6 +436,7 @@
             <span class="control-label">Right</span>
             <div class="buttons has-addons is-centered method-picker gc-right-picker">
               <button class="button is-small is-rounded" data-method="input">Input</button>
+              <button class="button is-small is-rounded" data-method="mask">Light mask</button>
               <button class="button is-small is-rounded" data-method="gt">Target (GT)</button>
               <button class="button is-small is-rounded" data-method="pbr">PBR</button>
               <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
