@@ -1,84 +1,89 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="Project page for our PBR / relighting paper.">
-  <meta name="keywords" content="PBR, Relighting, Inverse Rendering, Diffusion">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting">
+  <meta name="description" content="LightCrafter relights videos by refining a physically based rendering (PBR) proxy with a video diffusion model, giving controllable and temporally consistent relighting.">
+  <meta name="keywords" content="video relighting, inverse rendering, physically based rendering, video diffusion, PBR proxy">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <title>LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting</title>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css?v=3">
   <link rel="icon" href="./static/images/favicon.svg">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css?v=12">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <style>
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_book.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_demi.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_extrabold.ttf') format('truetype'); font-weight: 800; font-display: swap; }
+    @font-face { font-family: 'Futura'; src: url('fonts/futura/futura_heavy.ttf') format('truetype'); font-weight: 900; font-display: swap; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('fonts/jetbrainsmono/jetbrainsmono_regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+  </style>
+
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js?v=3"></script>
+  <script defer src="./static/js/index.js?v=11"></script>
 </head>
 <body>
 
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">
-            <span style="white-space: nowrap;">LightCrafter:</span>
-            PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting
-          </h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><a href="https://zixinguo.me/" target="_blank" rel="noopener"><strong>Zixin Guo</strong></a><sup>1</sup></span>
-            <span class="author-block"><a href="https://yehonathanlitman.github.io/" target="_blank" rel="noopener"><strong>Yehonathan Litman</strong></a><sup>1</sup></span>
-            <span class="author-block"><a href="https://www.linkedin.com/in/yifeng-he-502a85158/" target="_blank" rel="noopener"><strong>Yifeng He</strong></a><sup>2</sup></span>
-            <br>
-            <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=3pO52nwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener"><strong>John Miller</strong></a><sup>3</sup></span>
-            <span class="author-block"><a href="https://sally-chen.github.io/" target="_blank" rel="noopener"><strong>Chuhan Chen</strong></a><sup>1</sup></span>
-            <span class="author-block"><a href="https://www.cs.cmu.edu/~deva/" target="_blank" rel="noopener"><strong>Deva Ramanan</strong></a><sup>1</sup></span>
-          </div>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
-            <span class="author-block"><sup>2</sup>University of Toronto</span>
-            <span class="author-block"><sup>3</sup>Bosch Research</span>
-          </div>
-
-          <div class="column has-text-centered" style="margin-top: 1rem;">
-            <div class="publication-links">
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2607.08016" target="_blank" rel="noopener"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="ai ai-arxiv"></i></span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="https://github.com/charlieguo0610/lightcrafter" target="_blank" rel="noopener"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code</span>
-                </a>
-              </span>
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span class="title-main">LightCrafter</span><span class="title-sub">PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting</span></h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://zixinguo.me/" target="_blank" rel="noopener">Zixin Guo</a><sup>1</sup></span>
+              <span class="author-block"><a href="https://yehonathanlitman.github.io/" target="_blank" rel="noopener">Yehonathan Litman</a><sup>1</sup></span>
+              <span class="author-block"><a href="https://www.linkedin.com/in/yifeng-he-502a85158/" target="_blank" rel="noopener">Yifeng He</a><sup>2</sup></span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=3pO52nwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener">John Miller</a><sup>3</sup></span>
+              <span class="author-block"><a href="https://sally-chen.github.io/" target="_blank" rel="noopener">Chuhan Chen</a><sup>1</sup></span>
+              <span class="author-block"><a href="https://www.cs.cmu.edu/~deva/" target="_blank" rel="noopener">Deva Ramanan</a><sup>1</sup></span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
+              <span class="author-block"><sup>2</sup>University of Toronto</span>
+              <span class="author-block"><sup>3</sup>Bosch Research</span>
+            </div>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2607.08016" target="_blank" rel="noopener" class="external-link button is-medium is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2607.08016" target="_blank" rel="noopener" class="external-link button is-medium is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/charlieguo0610/lightcrafter" target="_blank" rel="noopener" class="external-link button is-medium is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
+                  </a>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
+<!-- Teaser (original) -->
 <section class="hero teaser">
   <div class="container teaser-video-wrap">
     <div class="hero-body">
@@ -237,846 +242,240 @@
   </div>
 </section>
 
-
-<!-- Abstract -->
-<section class="section">
+<!-- Abstract and method -->
+<section class="section hero" id="abstract">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
+      </div>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
         <div class="content has-text-justified">
           <p>
             Video relighting requires balancing long-form temporal consistency with physically grounded
             understanding of light transport, which depends on accurate estimation of intrinsic scene
-            properties such as materials, geometry, and illumination. Existing methods follow two
-            paradigms:
-            <strong>(1)</strong> Given an input video, explicitly reconstruct its photometric properties
-            via <em>inverse rendering</em>, and then relight the reconstructions to a target illumination
-            via <em>forward rendering</em>, either via physically-based rendering (PBR) or a neural
-            rendering engine. Such methods suffer from noisy reconstructions and struggle to capture
-            hard-to-model illumination effects such as global illumination.
-            <strong>(2)</strong> Alternatively, frame the task as a generative video-to-video translation
-            task that conditions on relighting targets (specified as target environment map or text).
-            However, such a framing limits relighting control and temporal stability since generative
-            diffusion models struggle to translate long-form videos. Moreover, such data-driven methods
-            are limited by availability of training pairs of input videos and their relit targets.
+            properties such as materials, geometry, and illumination. Existing methods follow two paradigms:
+            <b>(1)</b> explicitly reconstruct the photometric properties of the input video via <i>inverse rendering</i>
+            and relight the reconstruction to a target illumination via <i>forward rendering</i>, either with
+            physically-based rendering (PBR) or a neural rendering engine; such methods suffer from noisy
+            reconstructions and struggle with hard-to-model effects such as global illumination.
+            <b>(2)</b> Frame the task as generative video-to-video translation conditioned on a relighting target
+            (environment map or text); such a framing limits relighting control and temporal stability, since
+            diffusion models struggle to translate long videos, and is limited by the availability of paired training data.
           </p>
           <p>
-            We propose <strong>LightCrafter</strong>, a hybrid pipeline that reformulates video relighting
-            as <strong>video translation of a <em>proxy</em> video</strong>: rather than directly
-            translating the input video to the target, we translate a PBR rendering (of the input video
-            under the target illumination conditions) to the final target. This allows us to "bake"
-            illumination targets into the PBR-proxy rendering, removing the need to explicitly teach the
-            diffusion model about illumination concepts like environment maps. We find PBR proxy
-            renderings allow for more intricate lighting control while naturally providing long-form
-            temporal consistency. In fact, we show that PBR renders already outperform some prior art
-            for relighting, but struggle to model intricate effects like global illumination. To capture
-            such effects, we leverage photometric priors implicit in video generation models. Specifically,
-            we post-train CogVideoX on synthetic video pairs and real-world unpaired videos. We outperform
-            prior state-of-the-art on existing real-world relighting benchmarks and also contribute our own
-            synthetic benchmark for further analysis. We will release our dataset, benchmark, metrics, and
-            code.
+            We propose <b>LightCrafter</b>, a hybrid pipeline that reformulates video relighting as
+            <b>video translation of a <i>proxy</i> video</b>: rather than translating the input video to the target
+            directly, we translate a PBR rendering of the input video under the target illumination. This "bakes" the
+            illumination target into the proxy, removing the need to teach the diffusion model about environment maps,
+            and naturally provides intricate lighting control and long-form temporal consistency. PBR renders already
+            outperform some prior art for relighting but miss effects like global illumination; to capture them we
+            leverage the photometric priors of video generation models by post-training CogVideoX on synthetic video
+            pairs and real-world unpaired videos. We outperform prior state of the art on real-world relighting
+            benchmarks and contribute a synthetic benchmark for further analysis. We will release our dataset,
+            benchmark, metrics, and code.
           </p>
         </div>
       </div>
     </div>
+    <figure class="image method-figure">
+      <img src="./static/images/pipeline_overview.png" alt="Pipeline overview of LightCrafter.">
+      <figcaption class="has-text-centered">
+        <b>Method overview.</b> LightCrafter recovers a relightable scene state (photometric properties, geometry,
+        camera motion and illumination) from the input video and renders a frame-aligned PBR proxy under the target
+        lighting. The proxy is an explicit interface for environment relighting, indoor light insertion and scene-state
+        editing; a video diffusion refiner removes the artifacts of the imperfect render and produces a photorealistic,
+        temporally coherent relit video.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-
-<!-- Pipeline / Method Overview -->
-<section class="section" id="pipeline">
+<!-- Video relighting -->
+<section class="section hero" id="relighting">
+  <h2 class="title is-3">Video relighting</h2>
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Method Overview</h2>
-        <figure class="image">
-          <img src="./static/images/pipeline_overview.png"
-               alt="Pipeline overview of our method.">
-        </figure>
-        <div class="content has-text-justified" style="margin-top: 1.5rem;">
-          <p>
-            <strong>Overview of the proposed method.</strong>
-            Our method recovers a relightable scene state from an input video, including
-            photometric properties, geometry, camera motion, and illumination, and uses it to
-            render a frame-aligned PBR render. The rendering provides an explicit interface for
-            environment relighting, indoor light insertion, and G-buffer or scene-state editing,
-            while a video diffusion refiner removes artifacts from imperfect PBR renders and
-            produces a photorealistic, temporally coherent relit video.
-          </p>
-        </div>
-      </div>
+    <div class="content has-text-justified">
+      <p>One input video relit to three HDR environment maps. The top row shows the PBR proxy rendered under each target (chrome-ball probe inset); the bottom row shows the refined output. Illumination&nbsp;1 is a clear sky with a low sun (autumn_field_puresky), Illumination&nbsp;2 a clear noon sky with a high sun (kiara_5_noon), Illumination&nbsp;3 a misty, sunless morning (kloofendal_misty_morning). The proxy captures sky color, sun direction and shadow layout; the refiner repairs reconstruction artifacts (broken geometry, missing sky, flat materials) while preserving them.</p>
     </div>
+  </div>
+  <div class="carousel">
+        <div class="carousel-track">
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/relighting/rl-scene_1.mp4" type="video/mp4"></video>
+            <p class="subtitle">Downtown driving clip.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/relighting/rl-scene_7.mp4" type="video/mp4"></video>
+            <p class="subtitle">Highway driving clip.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/relighting/rl-scene_9.mp4" type="video/mp4"></video>
+            <p class="subtitle">Parking-lot driving clip.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/relighting/rl-europe_building.mp4" type="video/mp4"></video>
+            <p class="subtitle">Baroque palace courtyard.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/relighting/rl-temple.mp4" type="video/mp4"></video>
+            <p class="subtitle">Temple of Heaven.</p>
+          </div></div>
+        </div>
+        <button class="carousel-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots"></div>
   </div>
 </section>
 
-
-<!-- Real-world Video Relighting Applications -->
-<section class="section" id="applications">
-  <div class="container is-fluid gallery-container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Real-world Video Relighting Applications</h2>
-        <div class="content has-text-justified">
-          <p>
-            Real-world videos relit and edited by our pipeline. For each scene we
-            show the source clip, the PBR proxy our inverse-rendering produces, and the
-            diffusion-refined relit output. Light insertion edits start from a clean
-            scene render and add a new light source.
-          </p>
-        </div>
-      </div>
+<!-- Comparison to baselines -->
+<section class="section hero" id="comparison">
+  <h2 class="title is-3">Comparison to baselines</h2>
+  <div class="container is-max-desktop">
+    <div class="content has-text-justified">
+      <p>We compare against <b>DiffusionRenderer</b>, <b>Light-X</b>, <b>UniRelight</b> and <b>PCRP-Video</b>. In every panel the <span class="outline-red">input</span> and <span class="outline-blue">our result</span> are outlined, and the PBR proxy that conditions our refiner is shown next to them. Where the target is an HDR environment map we show it as a panorama with a chrome-ball probe (the sun is marked in red when it is a hard, dominant light) so sky color, sun direction and shadow depth can be checked against it for every method.</p>
     </div>
-
-    <!-- 1. La La Land (3-col: input | pbr | relit) -->
-    <div class="gallery-card is-grid" id="gallery-lalaland" style="--cols: 3;">
-      <div class="columns is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/lalaland/input.mp4?v=7" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">PBR</h5>
-          <div class="gallery-envmap-overlay-wrap">
-            <video autoplay muted loop playsinline class="gallery-video">
-              <source src="./static/videos/gallery/lalaland/pbr.mp4?v=14" type="video/mp4">
-            </video>
-            <img class="gallery-envmap-overlay"
-                 src="./static/images/kiara_5_noon_ball_ovl.png?v=1"
-                 alt="Environment map (kiara_5_noon) chrome ball.">
-          </div>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Relit</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/lalaland/relit.mp4?v=7" type="video/mp4">
-          </video>
-        </div>
-      </div>
+  </div>
+  <h3 class="title is-4">Real-world videos</h3>
+  <div class="container is-max-desktop">
+    <div class="content has-text-justified">
+      <p>For qualitative in-the-wild inference we use public stock or generated videos (Pexels, Sora, Kling) relit to a new HDR environment map; these are the clips shown in our user study. For paired real-video evaluation we take unseen DL3DV clips and, following Light-X, first relight them with Light-A-Video, then use the relit video as input and map it back to the original, which serves as the reference (last item).</p>
     </div>
-
-    <!-- 2. Human (3-col: input | pbr | relit) -->
-    <div class="gallery-card is-grid" id="gallery-human" style="--cols: 3;">
-      <div class="columns is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/human/input.mp4?v=20" type="video/mp4">
-          </video>
+  </div>
+  <div class="carousel">
+        <div class="carousel-track">
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-trolley-kiara.mp4" type="video/mp4"></video>
+            <p class="subtitle">City street &rarr; clear noon sky (kiara_5_noon). Ours replaces the overcast sky with the target's deep blue and the trolley casts a long, oblique shadow matching the 51&deg; sun, while the baselines either keep the flat overcast look with little cast shadow or have short shadows that don't match the sun direction.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/realworld-row.mp4" type="video/mp4"></video>
+            <p class="subtitle">Coastal lighthouse (drone) relit to a new HDR environment map. Ours stays temporally consistent over the long sequence because relighting is explicitly grounded in the PBR render, while the baselines interpret the lighting independently in each diffusion chunk, so their shadows and colors flicker between neighboring chunks despite only a small camera rotation.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-drive1-autumn.mp4" type="video/mp4"></video>
+            <p class="subtitle">Downtown drive &rarr; clear sky with a low sun (autumn_field_puresky, 29&deg; elevation). Ours replaces the grey sky with the target's clear blue and adds shadows from the low sun, while the baselines either keep the input's overcast lighting or change the tone without casting any shadow.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-drive3-autumn.mp4" type="video/mp4"></video>
+            <p class="subtitle">Parking lot &rarr; clear sky with a low sun (autumn_field_puresky). Ours swaps the storm clouds for the target's clear sky and throws long shadows across the lot, while the baselines either keep the cloudy sky of the input or blur away scene detail.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-europe-misty.mp4" type="video/mp4"></video>
+            <p class="subtitle">Baroque palace &rarr; misty morning (kloofendal_misty_morning). Ours replaces the blue sky with fog and dissolves the hard shadows under the arcades, while the baselines either keep the sunlit facade and blue sky or wash out the stone texture.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-drive2-misty.mp4" type="video/mp4"></video>
+            <p class="subtitle">Highway &rarr; misty morning (kloofendal_misty_morning). Ours turns the sky hazy and softens the truck's hard shadow since the target has no dominant sun, while the baselines either keep the sunny look of the input or degrade the road and vehicles.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-lalaland-misty.mp4" type="video/mp4"></video>
+            <p class="subtitle">Dancers &rarr; misty morning (kloofendal_misty_morning). Ours replaces the sunset sky with fog and neutralizes the warm tint, while the baselines keep the pink sky and warm tone and lose the dancers' details.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/realworld/rw-dl3dv-boardwalk.mp4" type="video/mp4"></video>
+            <p class="subtitle">DL3DV round trip: the original video is first relit by Light-A-Video (Input) and every method relights it back to the original illumination, so the original video is the Reference. Ours recovers the reference's overcast sky and daylight colors, while the baselines either keep a residual color cast from the input or drift to a wrong warm or over-bright tone.</p>
+          </div></div>
         </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">PBR</h5>
-          <div class="gallery-envmap-overlay-wrap">
-            <video autoplay muted loop playsinline class="gallery-video">
-              <source src="./static/videos/gallery/human/pbr.mp4?v=18" type="video/mp4">
-            </video>
-            <img class="gallery-envmap-overlay"
-                 src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=2"
-                 alt="Environment map (kiara_5_noon) chrome ball.">
-          </div>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Relit</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/human/relit.mp4?v=19" type="video/mp4">
-          </video>
-        </div>
-      </div>
+        <button class="carousel-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots"></div>
+  </div>
+  <h3 class="title is-4">Synthetic benchmark</h3>
+  <div class="container is-max-desktop">
+    <div class="content has-text-justified">
+      <p>Synthetic scenes are built in Blender from filtered Objaverse objects and primitive shapes on a textured ground plane under HDR environment illumination, rendered along camera trajectories with varying elevation, distance and object motion. Relighting accuracy can be judged against ground truth over time.</p>
     </div>
-
-    <!-- 3. Indoor Light Insertion (3-col: input | pbr | relit) -->
-    <div class="gallery-card" id="gallery-indoor-light">
-      <h3 class="title is-4">Real World Indoor Lighting Editing with GR3EN vs. LuxRemix vs. LightCrafter</h3>
-      <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
-        <p>
-          Because our lights are explicit 3D entities in the PBR proxy, an edit such as
-          <em>keeping only a single ceiling light on</em> or <em>keeping on a light that is
-          outside the frame</em> is rendered exactly and then refined. We compare against
-          <strong>GR3EN</strong> (per-light palette masks on visible fixtures) and
-          <strong>LuxRemix</strong> (given the ground-truth relit middle frame as its
-          reference) on synthetic indoor scenes generated with Infinigen, the generator
-          behind GR3EN's own training data, where an exact re-rendered target exists.
-          The meeting-room clip is real footage with an inserted virtual light (no ground
-          truth); the <em>Light mask</em> panel shows the light masks used to drive the
-          baselines on this clip.
-        </p>
-      </div>
-      <div class="comparison-card synthetic-compare generic-compare" id="indoor-compare" data-ver="10"
-           data-scene="indoor-scene108" data-left="gt" data-right="ours">
-        <div class="synthetic-controls">
-          <div class="control-group">
-            <span class="control-label">Scene</span>
-            <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
-              <button class="button is-small is-rounded is-active" data-scene="indoor-scene108"
-                      data-base="./static/videos/comparison/indoor-scene108"
-                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Shelf room: single ceiling light on</button>
-              <button class="button is-small is-rounded" data-scene="indoor-scene109"
-                      data-base="./static/videos/comparison/indoor-scene109"
-                      data-avail="input,gt,pbr,ours,gr3en,luxremix">Living room: single out-of-view light</button>
-              <button class="button is-small is-rounded" data-scene="indoor-meetingroom"
-                      data-base="./static/videos/comparison/indoor-meetingroom"
-                      data-avail="input,mask,pbr,ours,gr3en,luxremix">Meeting room: inserted light (real)</button>
-            </div>
-          </div>
-          <div class="control-group">
-            <span class="control-label">Left</span>
-            <div class="buttons has-addons is-centered method-picker gc-left-picker">
-              <button class="button is-small is-rounded" data-method="input">Input</button>
-              <button class="button is-small is-rounded" data-method="mask">Light mask</button>
-              <button class="button is-small is-rounded is-active" data-method="gt">Target (GT)</button>
-              <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-              <button class="button is-small is-rounded" data-method="ours">Ours</button>
-              <button class="button is-small is-rounded" data-method="gr3en">GR3EN</button>
-              <button class="button is-small is-rounded" data-method="luxremix">LuxRemix</button>
-            </div>
-          </div>
-          <div class="control-group">
-            <span class="control-label">Right</span>
-            <div class="buttons has-addons is-centered method-picker gc-right-picker">
-              <button class="button is-small is-rounded" data-method="input">Input</button>
-              <button class="button is-small is-rounded" data-method="mask">Light mask</button>
-              <button class="button is-small is-rounded" data-method="gt">Target (GT)</button>
-              <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-              <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
-              <button class="button is-small is-rounded" data-method="gr3en">GR3EN</button>
-              <button class="button is-small is-rounded" data-method="luxremix">LuxRemix</button>
-            </div>
-          </div>
+  </div>
+  <div class="carousel">
+        <div class="carousel-track">
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/synthetic/syn-s1.mp4" type="video/mp4"></video>
+            <p class="subtitle">Synthetic scene 1: static objects with a rotating camera</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/synthetic/syn-s2.mp4" type="video/mp4"></video>
+            <p class="subtitle">Synthetic scene 2: moving objects with a moving camera</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/synthetic/syn-s3.mp4" type="video/mp4"></video>
+            <p class="subtitle">Synthetic scene 3: static objects with rotating lights</p>
+          </div></div>
         </div>
-        <div class="synthetic-slider-wrap">
-          <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="comparison-video slider-before">
-              <source src="./static/videos/comparison/indoor-scene108/gt.mp4?v=5" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="comparison-video slider-after">
-              <source src="./static/videos/comparison/indoor-scene108/ours.mp4?v=5" type="video/mp4">
-            </video>
-            <span class="slider-label left gc-left-label">Target (GT)</span>
-            <span class="slider-label right gc-right-label">Ours</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-          </div>
-        </div>
-      </div>
+        <button class="carousel-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots"></div>
+  </div>
+  <h3 class="title is-4">MIT Multi-Illumination (real, paired ground truth)</h3>
+  <div class="container is-max-desktop">
+    <div class="content has-text-justified">
+      <p>Real indoor scenes with paired ground truth from the held-out <i>everett</i> building, each captured under 25 flash directions. Every method relights the same input to the selected target light; the real capture under that light is the ground truth.</p>
     </div>
-
-    <!-- 4. Car Light Insertion (3-col: input | pbr | relit) -->
-    <div class="gallery-card is-grid" id="gallery-car-light" style="--cols: 3;">
-      <h3 class="title is-4">Car Light Insertion</h3>
-      <div class="columns is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/car-light-insertion/input.mp4?v=9" type="video/mp4">
-          </video>
+  </div>
+  <div class="carousel">
+        <div class="carousel-track">
+          <div class="item"><div class="item-inner">
+            <img src="./static/videos/grids/mit/mit-everett_dining2.jpg" alt="">
+            <p class="subtitle">Scene: Kettle and board game.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <img src="./static/videos/grids/mit/mit-everett_kitchen18.jpg" alt="">
+            <p class="subtitle">Scene: Cabinet shelves.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <img src="./static/videos/grids/mit/mit-everett_kitchen2.jpg" alt="">
+            <p class="subtitle">Scene: Glass cabinet with bottles.</p>
+          </div></div>
         </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">PBR</h5>
-          <div class="gallery-envmap-overlay-wrap">
-            <video autoplay muted loop playsinline class="gallery-video">
-              <source src="./static/videos/gallery/car-light-insertion/pbr.mp4?v=9" type="video/mp4">
-            </video>
-            <img class="gallery-envmap-overlay"
-                 src="./static/images/envmaps/satara_night_no_lamps_2k_ball.png?v=2"
-                 alt="Environment map (satara_night_no_lamps) chrome ball.">
-          </div>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Relit</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/car-light-insertion/relit.mp4?v=9" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-
+        <button class="carousel-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots"></div>
   </div>
 </section>
 
-
-<!-- Long Video Relighting -->
-<section class="section" id="comparison">
-  <div class="container is-fluid comparison-container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Long Video Relighting</h2>
-        <div class="content has-text-justified">
-          <p>
-            We compare against <strong>PCRP-Video</strong>, <strong>UniRelight</strong>,
-            <strong>LightX</strong>, and <strong>DiffusionRenderer</strong> on long video
-            relighting tasks. Choose which method appears on each side of the slider and
-            drag the handle to A/B the results &mdash; on in-the-wild and held-out DL3DV
-            real-world scenes, on paired real MIT Multi-Illumination captures with ground
-            truth, and on our synthetic benchmark (where a held-out Target is also available).
-          </p>
-          <p>
-            Baselines often produce plausible relighting but entangle illumination with
-            generation, causing baked-in source lighting, color-tone drift, or inconsistent
-            shadows; our explicit PBR proxy anchors the target-light interaction before
-            diffusion refinement, enabling more faithful and temporally consistent responses
-            to the target illumination.
-          </p>
-        </div>
-      </div>
+<!-- Applications: indoor light editing -->
+<section class="section hero" id="applications">
+  <h2 class="title is-3">Applications: indoor light editing</h2>
+  <h3 class="title is-4">Real-world indoor lighting editing: GR3EN vs. LuxRemix vs. LightCrafter</h3>
+  <div class="container is-max-desktop">
+    <div class="content has-text-justified">
+      <p>Because lights are explicit 3D entities in the PBR proxy, an edit such as <i>keeping only a single ceiling light on</i> or <i>keeping on a light that is outside the frame</i> is rendered exactly and then refined. We compare against <b>GR3EN</b> (per-light palette masks on visible fixtures) and <b>LuxRemix</b> (given the ground-truth relit middle frame as its reference) on synthetic indoor scenes generated with Infinigen (windows 1&ndash;2), the generator behind both baselines' training data, where an exact re-rendered target exists, and on a real meeting-room clip with an inserted virtual light (window 3).</p>
     </div>
-
-    <!-- Real-world scene label -->
-    <div class="has-text-centered" style="margin: 0.5rem 0 0.75rem;">
-      <span class="scene-group-label">Real-world Scenes</span>
-    </div>
-    <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
-      <p>
-        <strong>Real-world relighting</strong>: in-the-wild driving, film and drone clips relit to a new HDR environment map. These are the exact clips shown to participants in our user study (Sec.&nbsp;4). The target map is shown under the slider as a panorama and a chrome-ball probe (the sun is marked in red when it is a hard, dominant light) so sky color, sun direction and shadow depth can be checked against it for every method.
-        <strong>DL3DV round trip</strong> (held-out scene, following Light-X): the original
-        video is first relit by Light-A-Video to produce the <em>Input</em>; every method then
-        relights it back to the original illumination, so the original video serves as the
-        <em>Reference</em> and its estimated illumination is the target map.
-      </p>
-    </div>
-
-    <!-- Interactive figure: pick a scene, then the method on each side of the slider. -->
-    <div class="comparison-card synthetic-compare generic-compare" id="realworld-compare" data-ver="7"
-         data-scene="rw-trolley-kiara" data-left="pbr" data-right="ours">
-      <div class="synthetic-controls">
-        <div class="control-group">
-          <span class="control-label">Scene</span>
-          <div class="buttons has-addons is-centered scene-picker gc-scene-picker">
-            <button class="button is-small is-rounded is-active" data-scene="rw-trolley-kiara"
-                    data-base="./static/videos/comparison/rw-trolley-kiara"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight"
-                    data-envmap="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                    data-envcap="Target lighting: kiara_5_noon (clear sky, sun at 51&deg; elevation, marked in red). A faithful relight should turn the overcast sky deep blue and cast a deep, oblique shadow from the trolley onto the road.">City street &rarr; noon sun</button>
-            <button class="button is-small is-rounded" data-scene="rw-vintage-car-noon"
-                    data-base="./static/videos/comparison/rw-vintage-car-noon"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                    data-envcap="Target lighting: kiara_5_noon (clear sky, hard sun at 51&deg; elevation, marked in red). Look for a crisp shadow under the car, a blue sky and neutral colors; the road should stay gray rather than tinted.">Vintage car &rarr; noon sun</button>
-            <button class="button is-small is-rounded" data-scene="rw-drive1-autumn"
-                    data-base="./static/videos/comparison/rw-drive1-autumn"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/autumn_field_puresky_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                    data-envcap="Target lighting: autumn_field_puresky (clear sky, low sun at 29&deg; elevation, marked in red). Expect a deep-blue sky and long, hard shadows in the sun direction, with the scene otherwise unchanged.">Downtown drive &rarr; clear sky</button>
-            <button class="button is-small is-rounded" data-scene="rw-drive3-autumn"
-                    data-base="./static/videos/comparison/rw-drive3-autumn"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/autumn_field_puresky_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                    data-envcap="Target lighting: autumn_field_puresky (clear sky, low sun at 29&deg; elevation, marked in red). Expect a deep-blue sky and long, hard shadows in the sun direction, with the scene otherwise unchanged.">Parking lot &rarr; clear sky</button>
-            <button class="button is-small is-rounded" data-scene="rw-europe-misty"
-                    data-base="./static/videos/comparison/rw-europe-misty"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Baroque palace &rarr; misty morning</button>
-            <button class="button is-small is-rounded" data-scene="rw-drive2-misty"
-                    data-base="./static/videos/comparison/rw-drive2-misty"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Highway &rarr; misty morning</button>
-            <button class="button is-small is-rounded" data-scene="rw-lalaland-misty"
-                    data-base="./static/videos/comparison/rw-lalaland-misty"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp"
-                    data-envmap="./static/images/envmaps/kloofendal_misty_morning_2k_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                    data-envcap="Target lighting: kloofendal_misty_morning (fog, no dominant sun). Expect soft, shadowless lighting and a desaturated, hazy tone; hard shadows or a saturated blue sky are errors.">Dancers &rarr; misty morning</button>
-            <button class="button is-small is-rounded" data-scene="realworld-row"
-                    data-base="./static/videos/comparison/realworld-row"
-                    data-avail="input,pbr,ours,dr,lightx,unirelight,pcrp">In-the-wild lighthouse</button>
-            <button class="button is-small is-rounded" data-scene="rw-dl3dv-boardwalk"
-                    data-base="./static/videos/comparison/rw-dl3dv-boardwalk"
-                    data-avail="input,gt,pbr,ours,dr,lightx,unirelight"
-                    data-envmap="./static/images/envmaps/dl3dv_00b1ad_pano.jpg?v=1"
-                    data-envball="./static/images/envmaps/dl3dv_00b1ad_ball.png?v=1"
-                    data-envcap="Target lighting: the illumination estimated from the original DL3DV capture (overcast, no dominant sun). A faithful round trip should recover the original video (Reference) from the moonlit Input; compare each method against Reference.">DL3DV boardwalk (round trip)</button>
-          </div>
+  </div>
+  <div class="carousel carousel-three-quarter">
+        <div class="carousel-track">
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/indoor/indoor-scene108.mp4" type="video/mp4"></video>
+            <p class="subtitle">Window 1 &mdash; Shelf room (Infinigen, exact re-rendered target). All ceiling lights are on in the input; the edit switches every light off except one. Ours reproduces the dimmer room and the falloff around the remaining light, GR3EN removes all spotlights, darker than the input brightness, and LuxRemix, propagating the ground-truth reference frame it is given, matches the target closely. Both baselines are purpose-built for indoor editing and trained on Infinigen; ours has never seen it.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/indoor/indoor-scene109.mp4" type="video/mp4"></video>
+            <p class="subtitle">Window 2 &mdash; Living room (Infinigen, exact re-rendered target). All lights are on in the input; the edit keeps on a single light and switches off the rest. Ours dims the room and keeps only the spill from the unseen light; GR3EN, whose palette mask can only address visible fixtures, leaves the room lit; LuxRemix follows its reference frame and turns the room nearly half-black.</p>
+          </div></div>
+          <div class="item"><div class="item-inner">
+            <video autoplay muted loop playsinline><source data-src="./static/videos/grids/indoor/indoor-meetingroom.mp4" type="video/mp4"></video>
+            <p class="subtitle">Window 3 &mdash; Meeting room (real footage). Two neutral ceiling panels are recolored to blue and yellow. GR3EN receives the fixture mask; LuxRemix, whose single-view editor is not public, receives the input middle frame with the recolored panels composited in as its reference and propagates it; our PBR proxy renders the new emission before refinement. Ours keeps each color on its own panel with blue and warm spill on the corresponding walls and leaves the rest of the room intact; GR3EN tints the whole room warm and drops the blue light; LuxRemix brightens the room roughly uniformly with almost no colored light reaching the scene. Because the edit is enforced in the proxy rather than inferred from a mask, ours gives finer control over light color, position, and falloff.</p>
+          </div></div>
         </div>
-        <div class="control-group">
-          <span class="control-label">Left</span>
-          <div class="buttons has-addons is-centered method-picker gc-left-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="gt">Reference</button>
-            <button class="button is-small is-rounded is-active" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
-            <button class="button is-small is-rounded" data-method="pcrp">PCRP-Video</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Right</span>
-          <div class="buttons has-addons is-centered method-picker gc-right-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="gt">Reference</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-            <button class="button is-small is-rounded" data-method="unirelight">UniRelight</button>
-            <button class="button is-small is-rounded" data-method="pcrp">PCRP-Video</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="synthetic-slider-wrap">
-        <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
-          <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/rw-trolley-kiara/pbr.mp4?v=7" type="video/mp4">
-          </video>
-          <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/rw-trolley-kiara/ours.mp4?v=7" type="video/mp4">
-          </video>
-          <span class="slider-label left gc-left-label">PBR</span>
-          <span class="slider-label right gc-right-label">Ours</span>
-          <div class="slider-handle"></div>
-          <div class="slider-knob"></div>
-        </div>
-        <div class="gc-envmap">
-          <img class="gc-envmap-img" src="./static/images/envmaps/kiara_5_noon_2k_pano.jpg?v=1" alt="Target environment map (equirectangular)">
-          <img class="gc-envmap-ball" src="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1" alt="Target lighting probe">
-          <p class="gc-envmap-cap"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- MIT Multi-Illumination: paired real relighting with ground truth -->
-    <div class="has-text-centered" style="margin: 1.5rem 0 0.75rem;">
-      <span class="scene-group-label">MIT Multi-Illumination (real, paired ground truth)</span>
-    </div>
-    <div class="content has-text-justified" style="max-width: 960px; margin: 0 auto 0.75rem;">
-      <p>
-        Real indoor scenes from the held-out <em>everett</em> building of the MIT
-        Multi-Illumination dataset, each captured under 25 flash directions. Every method
-        relights the same input to the selected target light (chrome ball), and the real
-        capture under that light is the ground truth. Note the displaced highlights on the
-        brushed-steel pot and the sink rim.
-      </p>
-    </div>
-    <div class="comparison-card mit-card" id="mit-compare" data-base="./static/images/mit"
-         data-scene="everett_dining2" data-light="dir_15">
-      <div class="synthetic-controls">
-        <div class="control-group">
-          <span class="control-label">Scene</span>
-          <div class="buttons has-addons is-centered scene-picker mit-scene-picker">
-            <button class="button is-small is-rounded is-active" data-scene="everett_dining2" data-lights="dir_15">Kettle and board game</button>
-            <button class="button is-small is-rounded" data-scene="everett_kitchen18" data-lights="dir_23">Cabinet shelves</button>
-            <button class="button is-small is-rounded" data-scene="everett_kitchen2" data-lights="dir_19">Glass cabinet with bottles</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Target light</span>
-          <div class="buttons has-addons is-centered mit-light-picker">
-            <button class="button is-small is-rounded is-active" data-light="dir_15">Light 1</button>
-            <button class="button is-small is-rounded" data-light="dir_22">Light 2</button>
-            <button class="button is-small is-rounded" data-light="dir_18">Light 3</button>
-          </div>
-          <img class="mit-ball" alt="Target light probe" src="./static/images/mit/everett_dining2/dir_15/ball.png">
-        </div>
-      </div>
-      <div class="mit-grid">
-        <figure><img data-m="input" src="./static/images/mit/everett_dining2/dir_15/input.jpg" alt=""><figcaption>Input</figcaption></figure>
-        <figure><img data-m="gt" src="./static/images/mit/everett_dining2/dir_15/gt.jpg" alt=""><figcaption>Relit GT</figcaption></figure>
-        <figure><img data-m="ours" src="./static/images/mit/everett_dining2/dir_15/ours.jpg" alt=""><figcaption>Ours</figcaption></figure>
-        <figure><img data-m="pbr" src="./static/images/mit/everett_dining2/dir_15/pbr.jpg" alt=""><figcaption>PBR</figcaption></figure>
-        <figure><img data-m="dr" src="./static/images/mit/everett_dining2/dir_15/dr.jpg" alt=""><figcaption>DiffusionRenderer</figcaption></figure>
-        <figure><img data-m="lightx" src="./static/images/mit/everett_dining2/dir_15/lightx.jpg" alt=""><figcaption>LightX</figcaption></figure>
-        <figure><img data-m="unirelight" src="./static/images/mit/everett_dining2/dir_15/unirelight.jpg" alt=""><figcaption>UniRelight</figcaption></figure>
-      </div>
-    </div>
-
-    <!-- Synthetic scenes label -->
-    <div class="has-text-centered" style="margin: 1.5rem 0 0.75rem;">
-      <span class="scene-group-label">Synthetic Scenes</span>
-    </div>
-
-    <!-- Single interactive figure: pick a synthetic scene, then choose which
-         method appears on each side of the before/after slider. -->
-    <div class="comparison-card synthetic-compare" id="synthetic-compare"
-         data-scene="s1" data-left="ours" data-right="dr">
-      <div class="synthetic-controls">
-        <div class="control-group">
-          <span class="control-label">Scene</span>
-          <div class="buttons has-addons is-centered scene-picker syn-scene-picker">
-            <button class="button is-small is-rounded is-active" data-scene="s1">Scene 1</button>
-            <button class="button is-small is-rounded" data-scene="s2">Scene 2</button>
-            <button class="button is-small is-rounded" data-scene="s3">Scene 3</button>
-            <button class="button is-small is-rounded" data-scene="s4">Scene 4</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Left</span>
-          <div class="buttons has-addons is-centered method-picker syn-left-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="target">Target</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded is-active" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded" data-method="dr">DiffusionRenderer</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Right</span>
-          <div class="buttons has-addons is-centered method-picker syn-right-picker">
-            <button class="button is-small is-rounded" data-method="input">Input</button>
-            <button class="button is-small is-rounded" data-method="target">Target</button>
-            <button class="button is-small is-rounded" data-method="pbr">PBR</button>
-            <button class="button is-small is-rounded" data-method="ours">Ours</button>
-            <button class="button is-small is-rounded is-active" data-method="dr">DiffusionRenderer</button>
-            <button class="button is-small is-rounded" data-method="lightx">LightX</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="synthetic-slider-wrap">
-        <div class="slider-cell synthetic-slider-cell" style="--pos: 50%;">
-          <video autoplay muted loop playsinline class="comparison-video slider-before">
-            <source src="./static/videos/comparison/s1/ours.mp4" type="video/mp4">
-          </video>
-          <video autoplay muted loop playsinline class="comparison-video slider-after">
-            <source src="./static/videos/comparison/s1/dr.mp4" type="video/mp4">
-          </video>
-          <span class="slider-label left syn-left-label">Ours</span>
-          <span class="slider-label right syn-right-label">DiffusionRenderer</span>
-          <div class="slider-handle"></div>
-          <div class="slider-knob"></div>
-        </div>
-      </div>
-    </div>
-
+        <button class="carousel-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots"></div>
   </div>
 </section>
-
-
-<!-- Additional Results -->
-<section class="section" id="gallery">
-  <div class="container is-fluid gallery-container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Additional Results</h2>
-        <div class="content has-text-justified">
-          <p>
-            Multi-illumination relighting on a variety of scenes. Each row shows the
-            input video alongside a single slider; drag the vertical handle to compare
-            <strong>PBR</strong> (left) vs <strong>Refined</strong> (right), and use the
-            <strong>Illum 1&ndash;3</strong> buttons to switch the target illumination.
-            The chrome-ball lighting probe in the corner previews the selected target
-            environment.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Showcase row 1: Driving Scene 1 (Input | PBR-vs-Relit slider, illum buttons) -->
-    <div class="gallery-card is-grid showcase-scene" id="gallery-scene-1" style="--cols: 2;">
-      <h3 class="title is-4">Driving Scene 1</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1.mp4"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum2_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum2.mp4"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum3_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum3.mp4"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_1/input.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1_pbr.mp4?v=11" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_1/illum1.mp4" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-card is-grid showcase-scene" id="gallery-scene-7" style="--cols: 2;">
-      <h3 class="title is-4">Driving Scene 2</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1.mp4"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum2_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum2.mp4"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum3_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum3.mp4"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_7/input.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1_pbr.mp4?v=11" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_7/illum1.mp4" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-card is-grid showcase-scene" id="gallery-scene-9" style="--cols: 2;">
-      <h3 class="title is-4">Driving Scene 3</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1.mp4"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum2_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum2.mp4"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum3_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum3.mp4"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_9/input.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1_pbr.mp4?v=11" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/scene_9/illum1.mp4" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-card is-grid showcase-scene" id="gallery-europe-building" style="--cols: 2;">
-      <h3 class="title is-4">European Building</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1.mp4"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum2_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum2.mp4"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum3_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum3.mp4"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/in-the-wild-scene-paper/europe_building/input.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1_pbr.mp4?v=11" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/europe_building/illum1.mp4" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-card is-grid showcase-scene" id="gallery-temple" style="--cols: 2;">
-      <h3 class="title is-4">Temple</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1.mp4"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/temple/illum2_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/temple/illum2.mp4"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/in-the-wild-scene-paper/temple/illum3_pbr.mp4?v=11"
-                data-relit="./static/videos/gallery/in-the-wild-scene-paper/temple/illum3.mp4"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/in-the-wild-scene-paper/temple/input.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1_pbr.mp4?v=11" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/in-the-wild-scene-paper/temple/illum1.mp4" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-card is-grid showcase-scene" id="gallery-old-vintage-car" style="--cols: 2;">
-      <h3 class="title is-4">Old Vintage Car</h3>
-      <div class="buttons has-addons is-centered illum-picker">
-        <button class="button is-small is-rounded is-active" data-illum="1"
-                data-pbr="./static/videos/gallery/old-vintage-car/pbr_illum1.mp4?v=10"
-                data-relit="./static/videos/gallery/old-vintage-car/illum1.mp4?v=10"
-                data-ball="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                data-envname="autumn_field_puresky">Illum 1</button>
-        <button class="button is-small is-rounded" data-illum="2"
-                data-pbr="./static/videos/gallery/old-vintage-car/pbr_illum2.mp4?v=10"
-                data-relit="./static/videos/gallery/old-vintage-car/illum2.mp4?v=10"
-                data-ball="./static/images/envmaps/kiara_5_noon_2k_ball.png?v=1"
-                data-envname="kiara_5_noon">Illum 2</button>
-        <button class="button is-small is-rounded" data-illum="3"
-                data-pbr="./static/videos/gallery/old-vintage-car/pbr_illum3.mp4?v=10"
-                data-relit="./static/videos/gallery/old-vintage-car/illum3.mp4?v=10"
-                data-ball="./static/images/envmaps/kloofendal_misty_morning_2k_ball.png?v=1"
-                data-envname="kloofendal_misty_morning">Illum 3</button>
-      </div>
-      <div class="columns is-multiline is-centered is-mobile">
-        <div class="column has-text-centered">
-          <h5 class="title is-6">Input</h5>
-          <video autoplay muted loop playsinline class="gallery-video">
-            <source src="./static/videos/gallery/old-vintage-car/input.mp4?v=10" type="video/mp4">
-          </video>
-        </div>
-        <div class="column has-text-centered">
-          <h5 class="title is-6"><strong>PBR</strong> &harr; <strong>Refined</strong></h5>
-          <div class="slider-cell" style="--pos: 50%;">
-            <video autoplay muted loop playsinline class="gallery-video slider-before">
-              <source src="./static/videos/gallery/old-vintage-car/pbr_illum1.mp4?v=10" type="video/mp4">
-            </video>
-            <video autoplay muted loop playsinline class="gallery-video slider-after">
-              <source src="./static/videos/gallery/old-vintage-car/illum1.mp4?v=10" type="video/mp4">
-            </video>
-            <span class="slider-label left">PBR</span>
-            <span class="slider-label right">Refined</span>
-            <div class="slider-handle"></div>
-            <div class="slider-knob"></div>
-            <div class="showcase-probe">
-              <img src="./static/images/envmaps/autumn_field_puresky_2k_ball.png?v=1"
-                   alt="Target lighting probe (chrome ball).">
-              <span class="showcase-probe-name">autumn_field_puresky</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
 
 <!-- BibTeX -->
-<section class="section" id="BibTeX">
+<section class="section hero" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{guo2026lightcrafter,
+    <div class="bibtex-header">
+      <h2 class="title">BibTeX</h2>
+      <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+        <i class="fas fa-copy"></i>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <pre id="bibtex-code"><code>@article{guo2026lightcrafter,
   title   = {LightCrafter: PBR-Conditioned Video Diffusion Refinement for Controllable and Consistent Relighting},
   author  = {Guo, Zixin and Litman, Yehonathan and He, Yifeng and Miller, John and Chen, Chuhan and Ramanan, Deva},
   journal = {arXiv preprint arXiv:2607.08016},
@@ -1085,20 +484,18 @@
   </div>
 </section>
 
+  </main>
 
 <footer class="footer">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-8">
-        <div class="content has-text-centered">
+        <div class="content">
           <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            We use the website template from <a
-              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            The page layout follows the <a href="https://eyeline-labs.github.io/Vista4D/" target="_blank">Vista4D</a> project page, built on the
+            <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> adopted from
+            <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
           </p>
         </div>
       </div>

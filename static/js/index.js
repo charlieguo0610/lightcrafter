@@ -1,605 +1,509 @@
-window.HELP_IMPROVE_VIDEOJS = false;
+// LightCrafter project page. Carousel / BibTeX / scroll helpers follow the Vista4D project page.
 
-var INTERP_BASE = "./static/interpolation/stacked";
-var NUM_INTERP_FRAMES = 240;
+// Minimum time (ms) before a carousel auto-advances. The actual delay is
+// ceil(minTime / videoDuration) × videoDuration, so each video always
+// finishes at least one full loop and the total wait is >= this value.
+var CAROUSEL_AUTOPLAY_MIN = 5000;
 
-var interp_images = [];
-function preloadInterpolationImages() {
-  for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
-    var path = INTERP_BASE + '/' + String(i).padStart(6, '0') + '.jpg';
-    interp_images[i] = new Image();
-    interp_images[i].src = path;
-  }
+// Start playback and retry once the browser has enough data, so a video whose
+// src was set a moment ago does not stay frozen on its first frame.
+function safePlay(videoEl) {
+    var p = videoEl.play();
+    if (p && p.catch) p.catch(function() {});
+    if (videoEl.readyState < 3) {
+        var onReady = function() {
+            videoEl.removeEventListener('canplay', onReady);
+            if (videoEl.paused && videoEl.getAttribute('preload') === 'auto') {
+                var q = videoEl.play();
+                if (q && q.catch) q.catch(function() {});
+            }
+        };
+        videoEl.addEventListener('canplay', onReady);
+    }
 }
 
-function setInterpolationImage(i) {
-  var image = interp_images[i];
-  image.ondragstart = function() { return false; };
-  image.oncontextmenu = function() { return false; };
-  $('#interpolation-image-wrapper').empty().append(image);
+// Load a video's src from its data-src attribute (lazy loading).
+function loadVideo(videoEl) {
+    if (videoEl.dataset.loaded) return;
+    videoEl.dataset.loaded = '1';
+    var source = videoEl.querySelector('source[data-src]');
+    if (source) {
+        source.src = source.dataset.src;
+        videoEl.load();
+    }
+}
+
+// Copy BibTeX to clipboard
+function copyBibTeX() {
+    const bibtexElement = document.getElementById('bibtex-code');
+    const button = document.querySelector('.copy-bibtex-btn');
+    const copyText = button.querySelector('.copy-text');
+    
+    if (bibtexElement) {
+        navigator.clipboard.writeText(bibtexElement.textContent).then(function() {
+            // Success feedback
+            button.classList.add('copied');
+            copyText.textContent = 'Cop';
+            
+            setTimeout(function() {
+                button.classList.remove('copied');
+                copyText.textContent = 'Copy';
+            }, 2000);
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = bibtexElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            button.classList.add('copied');
+            copyText.textContent = 'Cop';
+            setTimeout(function() {
+                button.classList.remove('copied');
+                copyText.textContent = 'Copy';
+            }, 2000);
+        });
+    }
+}
+
+// Scroll to top functionality
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Show/hide scroll to top button
+window.addEventListener('scroll', function() {
+    const scrollButton = document.querySelector('.scroll-to-top');
+    if (!scrollButton) return;
+    if (window.pageYOffset > 300) {
+        scrollButton.classList.add('visible');
+    } else {
+        scrollButton.classList.remove('visible');
+    }
+});
+
+// Carousel initialization
+function initCarousels() {
+    document.querySelectorAll('.carousel').forEach(function(carousel) {
+        var track = carousel.querySelector('.carousel-track');
+        var items = Array.from(track.children);
+        var prevBtn = carousel.querySelector('.carousel-prev');
+        var nextBtn = carousel.querySelector('.carousel-next');
+        var dotsContainer = carousel.querySelector('.carousel-dots');
+        var currentIndex = 0;
+        var autoplayTimer = null;
+        var pendingMetaCb = null;
+        var isTransitioning = false;
+        var isTwoUp = carousel.classList.contains('carousel-two-up');
+
+        function getSlidesPerView() {
+            if (!isTwoUp) return 1;
+            return window.innerWidth > 768 ? 2 : 1;
+        }
+
+        var maxSlidesPerView = isTwoUp ? 2 : 1;
+
+        // Clone items for seamless infinite scrolling:
+        // - Prepend clone of last item (for wrapping left)
+        // - Append clones of first N items (for wrapping right + filling two-up view)
+        var cloneBefore = items[items.length - 1].cloneNode(true);
+        cloneBefore.setAttribute('aria-hidden', 'true');
+        track.insertBefore(cloneBefore, track.firstChild);
+
+        for (var c = 0; c < maxSlidesPerView; c++) {
+            var cloneAfter = items[c].cloneNode(true);
+            cloneAfter.setAttribute('aria-hidden', 'true');
+            track.appendChild(cloneAfter);
+        }
+
+        // All track children including clones (for video management)
+        var allTrackChildren = Array.from(track.children);
+
+        // Stop all carousel videos from auto-playing on page load.
+        // src is not set yet (lazy-loaded via data-src), so use preload="none".
+        allTrackChildren.forEach(function(item) {
+            var v = item.querySelector('video');
+            if (v) {
+                v.removeAttribute('autoplay');
+                v.setAttribute('preload', 'none');
+                v.pause();
+            }
+        });
+
+        // Play only the currently visible videos from the start, pause the rest.
+        // Skip if the carousel is hidden (e.g., inside a collapsed section).
+        function activateVideos() {
+            if (!carousel.offsetParent) return;
+
+            var slidesPerView = getSlidesPerView();
+            var startPos = currentIndex + 1; // +1 for prepended clone
+
+            allTrackChildren.forEach(function(item, domIdx) {
+                var v = item.querySelector('video');
+                if (!v) return;
+                if (domIdx >= startPos && domIdx < startPos + slidesPerView) {
+                    loadVideo(v);
+                    v.setAttribute('preload', 'auto');
+                    v.currentTime = 0;
+                    safePlay(v);
+                } else {
+                    v.pause();
+                    v.setAttribute('preload', 'none');
+                }
+            });
+
+            // Preload the next and previous real slides so navigation feels instant.
+            [currentIndex + 1, currentIndex - 1].forEach(function(i) {
+                var realIdx = ((i % items.length) + items.length) % items.length;
+                var item = allTrackChildren[realIdx + 1]; // +1 for prepended clone
+                if (item) {
+                    var v = item.querySelector('video');
+                    if (v) loadVideo(v);
+                }
+            });
+        }
+
+        // Offset by 1 to skip the prepended clone
+        function setTransform(index) {
+            var stepPercent = 100 / getSlidesPerView();
+            var pos = (index + 1) * stepPercent;
+            track.style.transform = 'translateX(-' + pos + '%)';
+        }
+
+        // Set initial position without animation (activation deferred to IntersectionObserver)
+        track.style.transition = 'none';
+        setTransform(0);
+        track.offsetHeight; // force reflow
+        track.style.transition = '';
+
+        // Create dots (one per real item)
+        items.forEach(function(_, i) {
+            var dot = document.createElement('button');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', function() { goTo(i); });
+            dotsContainer.appendChild(dot);
+        });
+        var dots = Array.from(dotsContainer.children);
+
+        function updateDots() {
+            dots.forEach(function(d, i) {
+                d.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function goTo(index) {
+            if (isTransitioning) return;
+
+            if (index < 0) {
+                // Wrapping left: animate to the prepended clone, then snap
+                isTransitioning = true;
+                setTransform(-1);
+                currentIndex = items.length - 1;
+                updateDots();
+                resetAutoplay();
+                return;
+            }
+
+            if (index >= items.length) {
+                // Wrapping right: animate to the appended clone, then snap
+                isTransitioning = true;
+                setTransform(items.length);
+                currentIndex = 0;
+                updateDots();
+                resetAutoplay();
+                return;
+            }
+
+            currentIndex = index;
+            setTransform(currentIndex);
+            updateDots();
+            activateVideos();
+            resetAutoplay();
+        }
+
+        // After animating to a clone, instantly snap to the real position
+        track.addEventListener('transitionend', function(e) {
+            if (e.propertyName === 'transform' && isTransitioning) {
+                isTransitioning = false;
+                track.style.transition = 'none';
+                setTransform(currentIndex);
+                track.offsetHeight; // force reflow before restoring transition
+                track.style.transition = '';
+                activateVideos();
+            }
+        });
+
+        prevBtn.addEventListener('click', function() { goTo(currentIndex - 1); });
+        nextBtn.addEventListener('click', function() { goTo(currentIndex + 1); });
+
+        // Keyboard navigation
+        carousel.setAttribute('tabindex', '0');
+        carousel.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') goTo(currentIndex - 1);
+            if (e.key === 'ArrowRight') goTo(currentIndex + 1);
+        });
+
+        // Pause autoplay on hover
+        carousel.addEventListener('mouseenter', function() {
+            cleanupAutoplay();
+        });
+        carousel.addEventListener('mouseleave', function() {
+            resetAutoplay();
+        });
+
+        // Compute autoplay delay: N full loops of the current video where
+        // N = max(1, ceil(CAROUSEL_AUTOPLAY_MIN / duration)).
+        // Returns null if video duration is not yet available.
+        function getAutoplayDelay() {
+            var video = items[currentIndex] && items[currentIndex].querySelector('video');
+            if (video && isFinite(video.duration) && video.duration > 0) {
+                var durationMs = video.duration * 1000;
+                var n = Math.max(1, Math.ceil(CAROUSEL_AUTOPLAY_MIN / durationMs));
+                return n * durationMs;
+            }
+            return null;
+        }
+
+        function cleanupAutoplay() {
+            if (autoplayTimer) clearTimeout(autoplayTimer);
+            autoplayTimer = null;
+            if (pendingMetaCb) {
+                pendingMetaCb.video.removeEventListener('loadedmetadata', pendingMetaCb.fn);
+                pendingMetaCb = null;
+            }
+        }
+
+        function resetAutoplay() {
+            cleanupAutoplay();
+
+            // Don't auto-advance if carousel is hidden (collapsed section)
+            if (!carousel.offsetParent) return;
+
+            var delay = getAutoplayDelay();
+            if (delay !== null) {
+                autoplayTimer = setTimeout(function() {
+                    goTo(currentIndex + 1);
+                }, delay);
+            } else {
+                // Duration not available yet (video still loading);
+                // wait for metadata then set the proper timer
+                var video = items[currentIndex] && items[currentIndex].querySelector('video');
+                if (video) {
+                    var fn = function() {
+                        video.removeEventListener('loadedmetadata', fn);
+                        pendingMetaCb = null;
+                        resetAutoplay();
+                    };
+                    pendingMetaCb = { video: video, fn: fn };
+                    video.addEventListener('loadedmetadata', fn);
+                }
+                // Fallback in case metadata never loads
+                autoplayTimer = setTimeout(function() {
+                    if (pendingMetaCb) {
+                        pendingMetaCb.video.removeEventListener('loadedmetadata', pendingMetaCb.fn);
+                        pendingMetaCb = null;
+                    }
+                    goTo(currentIndex + 1);
+                }, CAROUSEL_AUTOPLAY_MIN);
+            }
+        }
+
+        // Update transform on resize when slidesPerView changes
+        if (isTwoUp) {
+            var lastSlidesPerView = getSlidesPerView();
+            window.addEventListener('resize', function() {
+                var newSlidesPerView = getSlidesPerView();
+                if (newSlidesPerView !== lastSlidesPerView) {
+                    lastSlidesPerView = newSlidesPerView;
+                    track.style.transition = 'none';
+                    setTransform(currentIndex);
+                    track.offsetHeight;
+                    track.style.transition = '';
+                    activateVideos();
+                }
+            });
+        }
+
+        // Custom events for collapsible sections
+        carousel.addEventListener('carousel-activate', function() {
+            activateVideos();
+            resetAutoplay();
+        });
+        carousel.addEventListener('carousel-deactivate', function() {
+            cleanupAutoplay();
+            allTrackChildren.forEach(function(item) {
+                var v = item.querySelector('video');
+                if (v) v.pause();
+            });
+        });
+
+        // Activate the carousel only when it scrolls into view; pause when it leaves.
+        if ('IntersectionObserver' in window) {
+            var carouselObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        activateVideos();
+                        resetAutoplay();
+                    } else {
+                        cleanupAutoplay();
+                        allTrackChildren.forEach(function(item) {
+                            var v = item.querySelector('video');
+                            if (v) v.pause();
+                        });
+                    }
+                });
+            }, { rootMargin: '100px 0px' });
+            carouselObserver.observe(carousel);
+        } else {
+            // Fallback for browsers without IntersectionObserver
+            activateVideos();
+            resetAutoplay();
+        }
+    });
+}
+
+// Toggle a collapsible section and activate/deactivate its carousels
+function toggleCollapsible(header) {
+    var content = header.nextElementSibling;
+    var icon = header.querySelector('.collapsible-icon');
+    var hint = header.querySelector('.collapsible-hint');
+    var isShowing = content.classList.toggle('show');
+    icon.classList.toggle('open', isShowing);
+    if (hint) hint.textContent = isShowing ? 'Click to collapse' : 'Click to expand';
+
+    content.querySelectorAll('.carousel').forEach(function(c) {
+        c.dispatchEvent(new Event(isShowing ? 'carousel-activate' : 'carousel-deactivate'));
+    });
 }
 
 
-$(document).ready(function() {
-    // Check for click events on the navbar burger icon
-    $(".navbar-burger").click(function() {
-      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      $(".navbar-burger").toggleClass("is-active");
-      $(".navbar-menu").toggleClass("is-active");
-
-    });
-
-    var options = {
-			slidesToScroll: 1,
-			slidesToShow: 3,
-			loop: true,
-			infinite: true,
-			autoplay: false,
-			autoplaySpeed: 3000,
-    }
-
-		// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
-
-    // Loop on each carousel initialized
-    for(var i = 0; i < carousels.length; i++) {
-    	// Add listener to  event
-    	carousels[i].on('before:show', state => {
-    		console.log(state);
-    	});
-    }
-
-    // Access to bulmaCarousel instance of an element
-    var element = document.querySelector('#my-element');
-    if (element && element.bulmaCarousel) {
-    	// bulmaCarousel instance is available as element.bulmaCarousel
-    	element.bulmaCarousel.on('before-show', function(state) {
-    		console.log(state);
-    	});
-    }
-
-    /*var player = document.getElementById('interpolation-video');
-    player.addEventListener('loadedmetadata', function() {
-      $('#interpolation-slider').on('input', function(event) {
-        console.log(this.value, player.duration);
-        player.currentTime = player.duration / 100 * this.value;
-      })
-    }, false);*/
-    preloadInterpolationImages();
-
-    $('#interpolation-slider').on('input', function(event) {
-      setInterpolationImage(this.value);
-    });
-    setInterpolationImage(0);
-    $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES - 1);
-
-    bulmaSlider.attach();
-
-    // ----- Synchronize videos within the same comparison/gallery row -----
-    // For each `.comparison-card` or `.gallery-card` we install one master
-    // clock that retimes every sibling video to the first video's currentTime.
-    // The clock keeps ticking forever, so even when we swap a <source> mid-
-    // playback (e.g. via the baseline/scene picker) the new video catches up
-    // to the running playhead automatically.
+// ---------------------------------------------------------------------------
+// Original hero teaser: synced rows, PBR <-> Refined slider, G-buffer quad drag,
+// Appearance / Geometry toggle.
+// ---------------------------------------------------------------------------
+function initTeaser() {
     function videosIn(card) {
-      return Array.prototype.slice.call(
-        card.querySelectorAll('video.comparison-video, video.gallery-video, video.teaser-video')
-      );
+        return Array.prototype.slice.call(card.querySelectorAll('video.teaser-video'));
     }
-
     function syncVideoGroup(card) {
-      var videos = videosIn(card);
-      if (videos.length < 2) return;
-
-      videos.forEach(function (v) {
-        v.muted = true;
-        v.playsInline = true;
-        v.loop = true;
-      });
-
-      function ready(v) { return v.readyState >= 1; }
-
-      function whenAllReady(cb) {
-        if (videos.every(ready)) { cb(); return; }
-        videos.forEach(function (v) {
-          if (!ready(v)) {
-            v.addEventListener('loadedmetadata', function once() {
-              v.removeEventListener('loadedmetadata', once);
-              if (videos.every(ready)) cb();
+        var videos = videosIn(card);
+        if (videos.length < 2) return;
+        videos.forEach(function (v) { v.muted = true; v.playsInline = true; v.loop = true; });
+        function ready(v) { return v.readyState >= 1; }
+        function whenAllReady(cb) {
+            if (videos.every(ready)) { cb(); return; }
+            videos.forEach(function (v) {
+                if (!ready(v)) {
+                    v.addEventListener('loadedmetadata', function once() {
+                        v.removeEventListener('loadedmetadata', once);
+                        if (videos.every(ready)) cb();
+                    });
+                }
             });
-          }
-        });
-      }
-
-      whenAllReady(function () {
-        videos.forEach(function (v) { v.currentTime = 0; });
-        videos.forEach(function (v) {
-          v.play().catch(function () { /* ignore autoplay errors */ });
-        });
-
-        function tick() {
-          // Refresh the live list every tick so newly-swapped videos in the
-          // same card are picked up.
-          var live = videosIn(card);
-          if (live.length >= 2) {
-            var anchor = live[0];
-            var t = anchor.currentTime;
-            live.forEach(function (v, idx) {
-              if (idx === 0) return;
-              var drift = Math.abs(v.currentTime - t);
-              if (drift > 0.12) v.currentTime = t;
-            });
-          }
-          requestAnimationFrame(tick);
         }
-        requestAnimationFrame(tick);
-      });
-    }
-
-    document.querySelectorAll('.comparison-card, .gallery-card, .teaser-row').forEach(function (card) {
-      syncVideoGroup(card);
-    });
-
-    // ----- Realworld baseline picker -----
-    // Each .baseline-picker button[data-baseline] updates the rightmost cell
-    // of its parent comparison-card to play that baseline's video. Source paths
-    // assume the card has an existing <source src=".../<baseline>.mp4"> we can
-    // pattern-match on to extract the row's folder.
-    var CACHE_BUSTER = '?v=5';
-
-    function setSrc(video, url) {
-      var src = video.querySelector('source');
-      if (!src) return;
-      var clean = url.split('?')[0];
-      src.setAttribute('src', clean + CACHE_BUSTER);
-      video.load();
-      video.play().catch(function () { /* ignore */ });
-    }
-
-    function activeButton(group, value, attr) {
-      Array.prototype.slice.call(group.querySelectorAll('button'))
-        .forEach(function (b) {
-          if (b.getAttribute(attr) === value) b.classList.add('is-active');
-          else b.classList.remove('is-active');
+        whenAllReady(function () {
+            videos.forEach(function (v) { v.currentTime = 0; });
+            videos.forEach(function (v) { v.play().catch(function () {}); });
+            function tick() {
+                var live = videosIn(card);
+                if (live.length >= 2) {
+                    var t = live[0].currentTime;
+                    live.forEach(function (v, idx) {
+                        if (idx === 0) return;
+                        if (Math.abs(v.currentTime - t) > 0.12) v.currentTime = t;
+                    });
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
         });
     }
+    document.querySelectorAll('.teaser-row').forEach(syncVideoGroup);
 
-    function wireBaselinePicker(card) {
-      var picker = card.querySelector('.baseline-picker');
-      var swapVideo = card.querySelector('video[data-method="baseline-pick"]');
-      var swapLabel = card.querySelector('.baseline-cell-label');
-      if (!picker || !swapVideo) return;
-
-      // Derive folder root from the swap video's current src so this helper
-      // works for any row (e.g. ./static/videos/comparison/realworld-row/).
-      var initialSrc = swapVideo.querySelector('source').getAttribute('src') || '';
-      var folderRoot = initialSrc.replace(/\/[^\/]+\.mp4(\?.*)?$/, '/');
-
-      var labelMap = {
-        lightx: 'vs LightX',
-        dr: 'vs DR',
-        unirelight: 'vs UniRelight',
-        pbr: 'vs PBR',
-        pcrp: 'vs PCRP'
-      };
-
-      Array.prototype.slice.call(picker.querySelectorAll('button[data-baseline]'))
-        .forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            var baseline = btn.getAttribute('data-baseline');
-            activeButton(picker, baseline, 'data-baseline');
-            swapVideo.setAttribute('data-current', baseline);
-            if (swapLabel) swapLabel.textContent = labelMap[baseline] || ('vs ' + baseline);
-            setSrc(swapVideo, folderRoot + baseline + '.mp4');
-          });
-        });
+    // Only decode the teaser's 24 clips while the teaser is on screen.
+    var teaserGrid = document.querySelector('.teaser-grid');
+    if (teaserGrid && 'IntersectionObserver' in window) {
+        var teaserObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                teaserGrid.querySelectorAll('video').forEach(function(v) {
+                    if (entry.isIntersecting) { v.play().catch(function() {}); } else { v.pause(); }
+                });
+            });
+        }, { rootMargin: '100px 0px' });
+        teaserObserver.observe(teaserGrid);
     }
 
-    document.querySelectorAll('.comparison-card .baseline-picker').forEach(function (picker) {
-      var card = picker.closest('.comparison-card');
-      if (card) wireBaselinePicker(card);
-    });
-
-    // ----- Before/after slider in the Showcase rows -----
     function wireSlider(cell) {
-      var beforeVid = cell.querySelector('video.slider-before');
-      var afterVid = cell.querySelector('video.slider-after');
-      if (!beforeVid || !afterVid) return;
-      [beforeVid, afterVid].forEach(function (v) {
-        v.muted = true; v.playsInline = true; v.loop = true;
-        v.play().catch(function () { /* ignore */ });
-      });
-
-      // Keep the two videos frame-locked to each other.
-      function tick() {
-        var t = beforeVid.currentTime;
-        if (Math.abs(afterVid.currentTime - t) > 0.12) {
-          afterVid.currentTime = t;
+        var beforeVid = cell.querySelector('video.slider-before');
+        var afterVid = cell.querySelector('video.slider-after');
+        if (!beforeVid || !afterVid) return;
+        [beforeVid, afterVid].forEach(function (v) {
+            v.muted = true; v.playsInline = true; v.loop = true;
+            v.play().catch(function () {});
+        });
+        function tick() {
+            var t = beforeVid.currentTime;
+            if (Math.abs(afterVid.currentTime - t) > 0.12) afterVid.currentTime = t;
+            requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-
-      var dragging = false;
-
-      function setPos(clientX) {
-        var rect = cell.getBoundingClientRect();
-        var x = clientX - rect.left;
-        var pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
-        cell.style.setProperty('--pos', pct + '%');
-      }
-
-      cell.addEventListener('mousedown', function (e) {
-        dragging = true; setPos(e.clientX); e.preventDefault();
-      });
-      window.addEventListener('mousemove', function (e) {
-        if (dragging) setPos(e.clientX);
-      });
-      window.addEventListener('mouseup', function () { dragging = false; });
-
-      cell.addEventListener('touchstart', function (e) {
-        if (e.touches.length) { dragging = true; setPos(e.touches[0].clientX); }
-      }, { passive: true });
-      cell.addEventListener('touchmove', function (e) {
-        if (dragging && e.touches.length) setPos(e.touches[0].clientX);
-      }, { passive: true });
-      cell.addEventListener('touchend', function () { dragging = false; });
+        var dragging = false;
+        function setPos(clientX) {
+            var rect = cell.getBoundingClientRect();
+            var pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+            cell.style.setProperty('--pos', pct + '%');
+        }
+        cell.addEventListener('mousedown', function (e) { dragging = true; setPos(e.clientX); e.preventDefault(); });
+        window.addEventListener('mousemove', function (e) { if (dragging) setPos(e.clientX); });
+        window.addEventListener('mouseup', function () { dragging = false; });
+        cell.addEventListener('touchstart', function (e) { if (e.touches.length) { dragging = true; setPos(e.touches[0].clientX); } }, { passive: true });
+        cell.addEventListener('touchmove', function (e) { if (dragging && e.touches.length) setPos(e.touches[0].clientX); }, { passive: true });
+        cell.addEventListener('touchend', function () { dragging = false; });
     }
-
     document.querySelectorAll('.slider-cell').forEach(wireSlider);
 
-    // ----- Teaser inverse-rendering quad: drag to shift the 4 diagonal bands -----
     function wireQuadDrag(quad) {
-      var dragging = false;
-      function setShift(clientX) {
-        var rect = quad.getBoundingClientRect();
-        var pct = ((clientX - rect.left) / rect.width) * 100;
-        pct = Math.max(25, Math.min(75, pct));   // keep knob (middle divider) on-screen
-        quad.style.setProperty('--shift', (pct - 50) + '%');
-      }
-      quad.addEventListener('mousedown', function (e) { dragging = true; setShift(e.clientX); e.preventDefault(); });
-      window.addEventListener('mousemove', function (e) { if (dragging) setShift(e.clientX); });
-      window.addEventListener('mouseup', function () { dragging = false; });
-      quad.addEventListener('touchstart', function (e) { if (e.touches.length) { dragging = true; setShift(e.touches[0].clientX); } }, { passive: true });
-      quad.addEventListener('touchmove', function (e) { if (dragging && e.touches.length) setShift(e.touches[0].clientX); }, { passive: true });
-      quad.addEventListener('touchend', function () { dragging = false; });
+        var dragging = false;
+        function setShift(clientX) {
+            var rect = quad.getBoundingClientRect();
+            var pct = ((clientX - rect.left) / rect.width) * 100;
+            pct = Math.max(25, Math.min(75, pct));
+            quad.style.setProperty('--shift', (pct - 50) + '%');
+        }
+        quad.addEventListener('mousedown', function (e) { dragging = true; setShift(e.clientX); e.preventDefault(); });
+        window.addEventListener('mousemove', function (e) { if (dragging) setShift(e.clientX); });
+        window.addEventListener('mouseup', function () { dragging = false; });
+        quad.addEventListener('touchstart', function (e) { if (e.touches.length) { dragging = true; setShift(e.touches[0].clientX); } }, { passive: true });
+        quad.addEventListener('touchmove', function (e) { if (dragging && e.touches.length) setShift(e.touches[0].clientX); }, { passive: true });
+        quad.addEventListener('touchend', function () { dragging = false; });
     }
     document.querySelectorAll('.teaser-quad').forEach(wireQuadDrag);
 
-    // ----- Inverse-rendering Appearance / Reconstruction toggle (controls all rows) -----
-    (function () {
-      var grid = document.querySelector('.teaser-grid');
-      var toggle = document.querySelector('.ir-toggle');
-      if (!grid || !toggle) return;
-      var geoVids = Array.prototype.slice.call(grid.querySelectorAll('.ir-geometry video'));
-      geoVids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
-      function playGeo() { geoVids.forEach(function (v) { v.play().catch(function () {}); }); }
-      toggle.addEventListener('click', function (e) {
+    var grid = document.querySelector('.teaser-grid');
+    var toggle = document.querySelector('.ir-toggle');
+    if (!grid || !toggle) return;
+    var geoVids = Array.prototype.slice.call(grid.querySelectorAll('.ir-geometry video'));
+    geoVids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
+    function playGeo() { geoVids.forEach(function (v) { v.play().catch(function () {}); }); }
+    toggle.addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-ir]');
         if (!btn) return;
         grid.setAttribute('data-ir-mode', btn.getAttribute('data-ir'));
         Array.prototype.slice.call(toggle.querySelectorAll('button')).forEach(function (b) {
-          b.classList.toggle('is-active', b === btn);
+            b.classList.toggle('is-active', b === btn);
         });
         if (btn.getAttribute('data-ir') === 'geometry') playGeo();
-      });
-      playGeo();
-    })();
+    });
+    playGeo();
+}
 
-    // ----- Synthetic comparison: pick scene + left/right method for the slider -----
-    function wireSyntheticComparison() {
-      var root = document.getElementById('synthetic-compare');
-      if (!root) return;
-
-      var cell = root.querySelector('.synthetic-slider-cell');
-      var beforeVid = cell.querySelector('video.slider-before');
-      var afterVid = cell.querySelector('video.slider-after');
-      var leftLabel = root.querySelector('.syn-left-label');
-      var rightLabel = root.querySelector('.syn-right-label');
-      var scenePicker = root.querySelector('.syn-scene-picker');
-      var leftPicker = root.querySelector('.syn-left-picker');
-      var rightPicker = root.querySelector('.syn-right-picker');
-
-      var FILE = {
-        input: 'input', target: 'gt', pbr: 'pbr', ours: 'ours',
-        dr: 'dr', lightx: 'lightx'
-      };
-      var LABEL = {
-        input: 'Input', target: 'Target', pbr: 'PBR', ours: 'Ours',
-        dr: 'DiffusionRenderer', lightx: 'LightX'
-      };
-      // Methods available in every synthetic scene folder.
-      var AVAIL = {
-        s1: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
-        s2: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
-        s3: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx'],
-        s4: ['input', 'target', 'pbr', 'ours', 'dr', 'lightx']
-      };
-
-      function srcFor(scene, method) {
-        return './static/videos/comparison/' + scene + '/' + FILE[method] + '.mp4';
-      }
-      function setVideo(video, url) {
-        var s = video.querySelector('source');
-        if (!s) return;
-        if (s.getAttribute('src') === url) return;
-        s.setAttribute('src', url);
-        video.load();
-        video.play().catch(function () { /* ignore */ });
-      }
-      function setActive(group, attr, value) {
-        Array.prototype.slice.call(group.querySelectorAll('button')).forEach(function (b) {
-          if (b.getAttribute(attr) === value) b.classList.add('is-active');
-          else b.classList.remove('is-active');
-        });
-      }
-      function applyAvailability(scene) {
-        var avail = AVAIL[scene] || [];
-        [leftPicker, rightPicker].forEach(function (group) {
-          Array.prototype.slice.call(group.querySelectorAll('button[data-method]'))
-            .forEach(function (b) {
-              var ok = avail.indexOf(b.getAttribute('data-method')) !== -1;
-              b.disabled = !ok;
-              b.classList.toggle('is-disabled', !ok);
-            });
-        });
-      }
-      function resolve(scene, method) {
-        var avail = AVAIL[scene] || [];
-        if (avail.indexOf(method) !== -1) return method;
-        return avail[0] || method;
-      }
-
-      function render() {
-        var scene = root.getAttribute('data-scene');
-        var left = resolve(scene, root.getAttribute('data-left'));
-        var right = resolve(scene, root.getAttribute('data-right'));
-        root.setAttribute('data-left', left);
-        root.setAttribute('data-right', right);
-
-        applyAvailability(scene);
-        setActive(scenePicker, 'data-scene', scene);
-        setActive(leftPicker, 'data-method', left);
-        setActive(rightPicker, 'data-method', right);
-
-        setVideo(beforeVid, srcFor(scene, left));
-        setVideo(afterVid, srcFor(scene, right));
-        if (leftLabel) leftLabel.textContent = LABEL[left];
-        if (rightLabel) rightLabel.textContent = LABEL[right];
-      }
-
-      scenePicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-scene]');
-        if (!btn) return;
-        root.setAttribute('data-scene', btn.getAttribute('data-scene'));
-        render();
-      });
-      leftPicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-method]');
-        if (!btn || btn.disabled) return;
-        root.setAttribute('data-left', btn.getAttribute('data-method'));
-        render();
-      });
-      rightPicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-method]');
-        if (!btn || btn.disabled) return;
-        root.setAttribute('data-right', btn.getAttribute('data-method'));
-        render();
-      });
-
-      render();
-    }
-
-    wireSyntheticComparison();
-
-    // ----- Generic comparison card: scene picker (each scene button carries its own
-    //       data-base folder and data-avail method list) + left/right method pickers -----
-    function wireGenericComparison(root) {
-      var cell = root.querySelector('.synthetic-slider-cell');
-      if (!cell) return;
-      var beforeVid = cell.querySelector('video.slider-before');
-      var afterVid = cell.querySelector('video.slider-after');
-      var leftLabel = root.querySelector('.gc-left-label');
-      var rightLabel = root.querySelector('.gc-right-label');
-      var scenePicker = root.querySelector('.gc-scene-picker');
-      var leftPicker = root.querySelector('.gc-left-picker');
-      var rightPicker = root.querySelector('.gc-right-picker');
-      var VER = root.getAttribute('data-ver') || '1';
-
-      function sceneBtn(scene) {
-        return scenePicker.querySelector('button[data-scene="' + scene + '"]');
-      }
-      function availFor(scene) {
-        var b = sceneBtn(scene);
-        return b ? (b.getAttribute('data-avail') || '').split(',') : [];
-      }
-      function labelFor(picker, method) {
-        var b = picker.querySelector('button[data-method="' + method + '"]');
-        return b ? b.textContent.trim() : method;
-      }
-      function srcFor(scene, method) {
-        var b = sceneBtn(scene);
-        return b.getAttribute('data-base') + '/' + method + '.mp4?v=' + VER;
-      }
-      function setVideo(video, url) {
-        var s = video.querySelector('source');
-        if (!s) return;
-        if (s.getAttribute('src') === url) return;
-        s.setAttribute('src', url);
-        video.load();
-        video.play().catch(function () { /* ignore */ });
-      }
-      function setActive(group, attr, value) {
-        Array.prototype.slice.call(group.querySelectorAll('button')).forEach(function (b) {
-          b.classList.toggle('is-active', b.getAttribute(attr) === value);
-        });
-      }
-      function applyAvailability(scene) {
-        var avail = availFor(scene);
-        [leftPicker, rightPicker].forEach(function (group) {
-          Array.prototype.slice.call(group.querySelectorAll('button[data-method]'))
-            .forEach(function (b) {
-              var ok = avail.indexOf(b.getAttribute('data-method')) !== -1;
-              b.disabled = !ok;
-              b.classList.toggle('is-disabled', !ok);
-            });
-        });
-      }
-      function resolve(scene, method, fallback) {
-        var avail = availFor(scene);
-        if (avail.indexOf(method) !== -1) return method;
-        if (avail.indexOf(fallback) !== -1) return fallback;
-        return avail[0] || method;
-      }
-      function render() {
-        var scene = root.getAttribute('data-scene');
-        var left = resolve(scene, root.getAttribute('data-left'), 'input');
-        var right = resolve(scene, root.getAttribute('data-right'), 'ours');
-        root.setAttribute('data-left', left);
-        root.setAttribute('data-right', right);
-        applyAvailability(scene);
-        setActive(scenePicker, 'data-scene', scene);
-        setActive(leftPicker, 'data-method', left);
-        setActive(rightPicker, 'data-method', right);
-        setVideo(beforeVid, srcFor(scene, left));
-        setVideo(afterVid, srcFor(scene, right));
-        if (leftLabel) leftLabel.textContent = labelFor(leftPicker, left);
-        if (rightLabel) rightLabel.textContent = labelFor(rightPicker, right);
-        // Optional per-scene target-envmap panel (panorama + probe + caption).
-        var env = root.querySelector('.gc-envmap');
-        if (env) {
-          var sb = sceneBtn(scene);
-          var pano = sb ? sb.getAttribute('data-envmap') : null;
-          if (pano) {
-            env.style.display = '';
-            var pi = env.querySelector('.gc-envmap-img');
-            if (pi && pi.getAttribute('src') !== pano) pi.setAttribute('src', pano);
-            var ball = sb.getAttribute('data-envball');
-            var bi = env.querySelector('.gc-envmap-ball');
-            if (bi) { if (ball) { bi.style.display = ''; if (bi.getAttribute('src') !== ball) bi.setAttribute('src', ball); } else { bi.style.display = 'none'; } }
-            var cap = env.querySelector('.gc-envmap-cap');
-            if (cap) cap.innerHTML = sb.getAttribute('data-envcap') || '';
-          } else {
-            env.style.display = 'none';
-          }
-        }
-      }
-      scenePicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-scene]');
-        if (!btn) return;
-        root.setAttribute('data-scene', btn.getAttribute('data-scene'));
-        render();
-      });
-      [['data-left', leftPicker], ['data-right', rightPicker]].forEach(function (pair) {
-        pair[1].addEventListener('click', function (e) {
-          var btn = e.target.closest('button[data-method]');
-          if (!btn || btn.disabled) return;
-          root.setAttribute(pair[0], btn.getAttribute('data-method'));
-          render();
-        });
-      });
-      render();
-    }
-
-    document.querySelectorAll('.generic-compare').forEach(wireGenericComparison);
-
-    // ----- MIT multi-illumination image card: scene + target-light pickers -----
-    function wireMitCard() {
-      var root = document.getElementById('mit-compare');
-      if (!root) return;
-      var base = root.getAttribute('data-base');
-      var scenePicker = root.querySelector('.mit-scene-picker');
-      var lightPicker = root.querySelector('.mit-light-picker');
-      var ball = root.querySelector('.mit-ball');
-      var imgs = Array.prototype.slice.call(root.querySelectorAll('.mit-grid img[data-m]'));
-
-      function render() {
-        var scene = root.getAttribute('data-scene');
-        var sBtn = scenePicker.querySelector('button[data-scene="' + scene + '"]');
-        var lights = (sBtn.getAttribute('data-lights') || '').split(',');
-        var light = root.getAttribute('data-light');
-        if (lights.indexOf(light) === -1) { light = lights[0]; root.setAttribute('data-light', light); }
-        Array.prototype.slice.call(scenePicker.querySelectorAll('button')).forEach(function (b) {
-          b.classList.toggle('is-active', b.getAttribute('data-scene') === scene);
-        });
-        Array.prototype.slice.call(lightPicker.querySelectorAll('button')).forEach(function (b, i) {
-          var l = lights[i];
-          b.style.display = l ? '' : 'none';
-          if (l) { b.setAttribute('data-light', l); b.textContent = 'Light ' + (i + 1); }
-          b.classList.toggle('is-active', l === light);
-        });
-        var dir = base + '/' + scene + '/' + light + '/';
-        imgs.forEach(function (im) { im.setAttribute('src', dir + im.getAttribute('data-m') + '.jpg'); });
-        if (ball) ball.setAttribute('src', dir + 'ball.png');
-      }
-      scenePicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-scene]');
-        if (!btn) return;
-        root.setAttribute('data-scene', btn.getAttribute('data-scene'));
-        render();
-      });
-      lightPicker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-light]');
-        if (!btn) return;
-        root.setAttribute('data-light', btn.getAttribute('data-light'));
-        render();
-      });
-      render();
-    }
-
-    wireMitCard();
-
-    // ----- Showcase scenes: pick illum for the slider + inline lighting probe -----
-    function wireShowcaseScene(card) {
-      var cell = card.querySelector('.slider-cell');
-      if (!cell) return;
-      var beforeVid = cell.querySelector('video.slider-before');
-      var afterVid = cell.querySelector('video.slider-after');
-      var probe = card.querySelector('.showcase-probe');
-      var picker = card.querySelector('.illum-picker');
-      if (!picker || !beforeVid || !afterVid) return;
-
-      function setVideo(video, url) {
-        var s = video.querySelector('source');
-        if (!s || !url) return;
-        if (s.getAttribute('src') === url) return;
-        s.setAttribute('src', url);
-        video.load();
-        video.play().catch(function () { /* ignore */ });
-      }
-      function setActive(value) {
-        Array.prototype.slice.call(picker.querySelectorAll('button[data-illum]'))
-          .forEach(function (b) {
-            if (b.getAttribute('data-illum') === value) b.classList.add('is-active');
-            else b.classList.remove('is-active');
-          });
-      }
-
-      function selectIllum(illum) {
-        var btn = picker.querySelector('button[data-illum="' + illum + '"]');
-        if (!btn) return;
-        setActive(illum);
-        setVideo(beforeVid, btn.getAttribute('data-pbr'));
-        setVideo(afterVid, btn.getAttribute('data-relit'));
-        if (probe) {
-          var ball = btn.getAttribute('data-ball');
-          var name = btn.getAttribute('data-envname') || '';
-          if (ball) probe.querySelector('img').setAttribute('src', ball);
-          var cap = probe.querySelector('.showcase-probe-name');
-          if (cap) cap.textContent = name;
-        }
-      }
-
-      picker.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-illum]');
-        if (!btn) return;
-        selectIllum(btn.getAttribute('data-illum'));
-      });
-
-      var active = picker.querySelector('button.is-active[data-illum]') ||
-                   picker.querySelector('button[data-illum]');
-      if (active) selectIllum(active.getAttribute('data-illum'));
-    }
-
-    document.querySelectorAll('.showcase-scene').forEach(wireShowcaseScene);
-})
+document.addEventListener('DOMContentLoaded', function() {
+    initCarousels();
+    initTeaser();
+});
